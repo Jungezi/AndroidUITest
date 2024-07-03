@@ -54,12 +54,11 @@ public class TableActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.recyclerView1);
 
         Random rand = new Random(111);
-        for(int i=0;i<item_size;i++)
-        {
+        for (int i = 0; i < item_size; i++) {
             String title = "标题" + i;
             String tag1 = i + "_1";
             String tag2 = i + "_2";
-            int num = rand.nextInt(10000)+10000;
+            int num = rand.nextInt(10000) + 10000;
             int num_sub = rand.nextInt(10000);
             ArrayList<String> tag = new ArrayList<>();
             tag.add(tag1);
@@ -69,17 +68,15 @@ public class TableActivity extends AppCompatActivity {
             cm_num.add(0);
             cm_is.add(0);
 
-            Log.e(TAG, i + ") item_init: " + num );
+            Log.e(TAG, i + ") item_init: " + num);
         }
-        for(int i = rand.nextInt(10) + 5;i < item_size;i+= rand.nextInt(10) + 5)
-        {
+        for (int i = rand.nextInt(10) + 5; i < item_size; i += rand.nextInt(10) + 5) {
             cm_num.set(i, 1);   // 随机设置cm位置
             cm_is.set(i, 1);    // 随机设置cm位置
             cm_cnt++;
         }
-        for(int i=1;i<item_size;i++)
-        {
-            cm_num.set(i, cm_num.get(i-1) + cm_num.get(i)); // 记录该位置及之前的cm数量
+        for (int i = 1; i < item_size; i++) {
+            cm_num.set(i, cm_num.get(i - 1) + cm_num.get(i)); // 记录该位置及之前的cm数量
         }
         myAdapter = new MyAdapter();
         Log.e(TAG, "创建Adapter");
@@ -88,7 +85,7 @@ public class TableActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(linearLayoutManager);
     }
 
-    class MyAdapter extends RecyclerView.Adapter<MyViewHolder>{
+    class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
         @NonNull
         @Override
@@ -96,7 +93,7 @@ public class TableActivity extends AppCompatActivity {
             //View view = View.inflate(TableActivity.this, R.layout.list_item, null);
             View holder_view;
 
-            switch (viewType){
+            switch (viewType) {
                 case 0:
                     holder_view = LayoutInflater.from(TableActivity.this).inflate(R.layout.list_item, parent, false);
                     break;
@@ -113,9 +110,9 @@ public class TableActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             int index = getActualPosition(position);
             int viewType = getItemViewType(position);
-            switch(viewType){
+            switch (viewType) {
                 case 0:
-                    Log.e(TAG, position + ") onBindViewHolder: "+ index);
+                    Log.e(TAG, position + ") onBindViewHolder: " + index);
                     TableItem tableItem = mItemList.get(index);
                     holder.tv_title.setText(tableItem.title);
                     holder.tv_tag1.setText(tableItem.tag.get(0));
@@ -132,7 +129,6 @@ public class TableActivity extends AppCompatActivity {
         }
 
 
-
         @Override
         public int getItemCount() {
             return mItemList.size() + cm_cnt;
@@ -141,17 +137,16 @@ public class TableActivity extends AppCompatActivity {
         @Override
         public int getItemViewType(int position) {
             int index = getActualPosition(position);
-            if(cm_is.get(index) == 1 && index + cm_num.get(index) == position) return 1;  //广告
+            if (cm_is.get(index) == 1 && index + cm_num.get(index) == position) return 1;  //广告
             else return 0;
         }
 
         public int getActualPosition(int position) {
 
-            for(int ed = position >= item_size ? item_size - 1:position; ed >= 0;ed--)
-            {
-                Log.e(TAG, position + ") getActualPosition: " + ed + " " +  cm_num.get(ed) + " " + cm_is.get(ed)  );
-                if(cm_is.get(ed) == 1 && ed + cm_num.get(ed) == position) return ed;    // 广告
-                if(ed + cm_num.get(ed) - cm_is.get(ed) == position) return ed;    // 一般
+            for (int ed = position >= item_size ? item_size - 1 : position; ed >= 0; ed--) {
+                Log.e(TAG, position + ") getActualPosition: " + ed + " " + cm_num.get(ed) + " " + cm_is.get(ed));
+                if (cm_is.get(ed) == 1 && ed + cm_num.get(ed) == position) return ed;    // 广告
+                if (ed + cm_num.get(ed) - cm_is.get(ed) == position) return ed;    // 一般
             }
             return 0;
         }
@@ -163,7 +158,8 @@ public class TableActivity extends AppCompatActivity {
 
         public int position;
         public int index;
-        public MyOnClickListener(int position, int index){
+
+        public MyOnClickListener(int position, int index) {
             this.position = position;
             this.index = index;
         }
@@ -171,10 +167,9 @@ public class TableActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Log.e(TAG, "onClick: 删除广告");
-            cm_cnt --;
+            cm_cnt--;
             cm_is.set(index, 0);
-            for(int i = index; i < item_size ; i++)
-            {
+            for (int i = index; i < item_size; i++) {
                 cm_num.set(i, cm_num.get(i) - 1);
             }
             myAdapter.notifyItemRemoved(position);
@@ -182,7 +177,7 @@ public class TableActivity extends AppCompatActivity {
         }
     }
 
-    static class MyViewHolder extends  RecyclerView.ViewHolder{
+    static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tv_title;
         TextView tv_tag1;
         TextView tv_tag2;
@@ -194,7 +189,7 @@ public class TableActivity extends AppCompatActivity {
             super(itemView);
             Log.e(TAG, "MyViewHolder: 创建中");
 
-            switch (viewType){
+            switch (viewType) {
                 case 0:
                     tv_title = itemView.findViewById(R.id.title);
                     tv_tag1 = itemView.findViewById(R.id.tag1);
