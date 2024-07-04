@@ -10,7 +10,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class MainActivity extends AppCompatActivity {
+public class ImitateActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,14 +24,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
-    public void toImitate(View view) {
-        Intent intent = new Intent(this, ImitateActivity.class);
-        startActivity(intent);
-    }
-
-    public void toPractice1(View view) {
-        Intent intent = new Intent(this, PractiveChartActivity.class);
+    public void MoreList(View view) {
+        Intent intent = new Intent(this, TableActivity.class);
         startActivity(intent);
     }
 }

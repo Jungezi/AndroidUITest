@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
+    <color name="black_use">#333333</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="blue">#2196F3</color>
+    <color name="blue">#508CEE</color>
+    <color name="orange">#FFB237</color>
     <color name="white_approx">#FFFFFF</color>
-    <color name="grey">#EDEDED</color>
-    <color name="red">#CD1212</color>
+    <color name="grey">#F5F7FB</color>
+    <color name="red">#FD4331</color>
     <color name="trans">#00000000</color>
+    <color name="red_light">#1AFB2F3B</color>
+    <color name="green_light">#1A1BC07D</color>
 </resources>
