@@ -1,19 +1,18 @@
 package com.www233.uitest;
 
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import java.util.ArrayList;
@@ -22,8 +21,13 @@ import java.util.List;
 public class PracticeChartActivity extends AppCompatActivity {
 
     private static final String TAG = "Practice";
+    private static final int row_item_num = 3;   //每行显示数量
     List<TextView> view_text = new ArrayList<>();
     List<Fragment> fragment_list = new ArrayList<>();
+
+    List<PracticeChartInfoItem> InfoList = new ArrayList<>();
+    private PracticeChartRecyclerViewAdapter myAdapter;
+    private RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +35,28 @@ public class PracticeChartActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_practive_chart);
 
+        setTableInfo();     // Recycler创建
 
-        initListButton();
+        initListButton();   // 练习fragment
 
+    }
+
+    private void setTableInfo() {
+
+        // 值赋给InfoList
+        for (int i = 0; i < 8; i++) {
+            PracticeChartInfoItem info = new PracticeChartInfoItem("该项的名字", "数值");
+            InfoList.add(info);
+        }
+        PracticeChartInfoItem info = new PracticeChartInfoItem("发债企业", "美团", getResources().getColor(R.color.blue, getTheme()));
+        InfoList.add(info);
+
+        mRecyclerView = findViewById(R.id.recyclerView);
+        myAdapter = new PracticeChartRecyclerViewAdapter(InfoList);
+        Log.e(TAG, "创建Adapter");
+        mRecyclerView.setAdapter(myAdapter);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(PracticeChartActivity.this, row_item_num);
+        mRecyclerView.setLayoutManager(gridLayoutManager);
     }
 
     private void initListButton() {
@@ -83,6 +106,8 @@ public class PracticeChartActivity extends AppCompatActivity {
 
     }
 
+
+    // 学习fragment
 //    @Override
 //    public void onClick(View v) {
 //        int id = v.getId();
