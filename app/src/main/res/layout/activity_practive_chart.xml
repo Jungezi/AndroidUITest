@@ -15,22 +15,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="15dp"
+        android:paddingBottom="10dp">
 
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:paddingTop="15dp"
-            android:paddingBottom="10dp">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:paddingBottom="10dp"
+                android:layout_marginBottom="10dp"
                 android:text="参考价格"
                 android:textSize="12sp" />
 
@@ -47,15 +47,13 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:paddingTop="15dp"
-            android:paddingBottom="10dp">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:paddingBottom="10dp"
+                android:layout_marginBottom="10dp"
                 android:text="到期收益率(年化)"
                 android:textSize="12sp" />
 
@@ -73,15 +71,13 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:paddingTop="15dp"
-            android:paddingBottom="10dp">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:paddingBottom="10dp"
+                android:layout_marginBottom="10dp"
                 android:text="参考价格"
                 android:textSize="12sp" />
 
@@ -137,8 +133,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
                     android:text="参考买盘"
                     android:textColor="@color/black_use" />
 
@@ -185,8 +181,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
                     android:text="参考买盘"
                     android:textColor="@color/black_use" />
 
@@ -244,23 +240,23 @@
                 android:id="@+id/textView12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="5dp"
-                android:paddingEnd="0dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="0dp"
                 android:text="到期收益率" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:paddingStart="20dp"
+                android:layout_marginStart="20dp"
                 android:src="@drawable/square_color_yellow" />
 
             <TextView
                 android:id="@+id/textView13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="5dp"
-                android:paddingEnd="0dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="0dp"
                 android:text="参考价" />
         </LinearLayout>
 
