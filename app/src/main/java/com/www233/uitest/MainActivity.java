@@ -2,6 +2,7 @@ package com.www233.uitest;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -11,6 +12,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +29,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void toImitate(View view) {
+        Log.e(TAG, "toImitate: UI1" );
         Intent intent = new Intent(this, ImitateActivity.class);
+        Log.e(TAG, "toImitate: UI1 done." );
         startActivity(intent);
     }
 
     public void toPractice1(View view) {
-        Intent intent = new Intent(this, PractiveChartActivity.class);
+        Intent intent = new Intent(this, PracticeChartActivity.class);
         startActivity(intent);
     }
 }

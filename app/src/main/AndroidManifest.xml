@@ -13,7 +13,7 @@
         android:theme="@style/Theme.UItest"
         tools:targetApi="31">
         <activity
-            android:name=".PractiveChartActivity"
+            android:name=".PracticeChartActivity"
             android:exported="false" />
         <activity
             android:name=".TableActivity"
