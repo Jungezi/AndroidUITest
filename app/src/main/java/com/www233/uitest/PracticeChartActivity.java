@@ -4,6 +4,7 @@ package com.www233.uitest;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +19,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PracticeChartActivity extends AppCompatActivity {
+public class PracticeChartActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "Practice";
     private static final int row_item_num = 3;   //每行显示数量
@@ -28,6 +29,7 @@ public class PracticeChartActivity extends AppCompatActivity {
     List<PracticeChartInfoItem> InfoList = new ArrayList<>();
     private PracticeChartRecyclerViewAdapter myAdapter;
     private RecyclerView mRecyclerView;
+    ViewPager2 view_pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,13 +69,9 @@ public class PracticeChartActivity extends AppCompatActivity {
         view_text.add(findViewById(R.id.view2_tv5));
         view_text.add(findViewById(R.id.view2_tv6));
         for (TextView i : view_text) {
-//            i.setOnClickListener(this);
-            i.setTextColor(getResources().getColor(R.color.grey_heavy, getTheme()));
-            i.setBackgroundColor(getResources().getColor(R.color.white, getTheme()));
+            i.setOnClickListener(this);
         }
-//        replaceFragment(new PracticeFragment1());
-        view_text.get(0).setTextColor(getResources().getColor(R.color.blue, getTheme()));
-        view_text.get(0).setBackgroundColor(getResources().getColor(R.color.grey, getTheme()));
+        refreshTextColor(0);
 
         Log.e(TAG, "initListButton: 创建fragment");
 
@@ -90,66 +88,62 @@ public class PracticeChartActivity extends AppCompatActivity {
             }
         });
 
-        fragment_list.add(new PracticeFragment1());
+        fragment_list.add(PracticeFragment.newInstance("第一个！！", getResources().getColor(R.color.orange, getTheme())));
         fragment_list.add(practiceFragment2);
-        fragment_list.add(new PracticeFragment1());
-        fragment_list.add(new PracticeFragment1());
-        fragment_list.add(new PracticeFragment1());
-        fragment_list.add(new PracticeFragment1());
+        fragment_list.add(PracticeFragment.newInstance("第333个！！", getResources().getColor(R.color.green_light, getTheme())));
+        fragment_list.add(PracticeFragment.newInstance("第4444个！！", getResources().getColor(R.color.white_approx, getTheme())));
+        fragment_list.add(PracticeFragment.newInstance("第wwwww个！！", getResources().getColor(R.color.red_light, getTheme())));
+        fragment_list.add(PracticeFragment.newInstance("第666666个！！", getResources().getColor(R.color.grey, getTheme())));
 
 
-        ViewPager2 view_pager = findViewById(R.id.viewpager);
+        view_pager = findViewById(R.id.viewpager);
         Log.e(TAG, "initListButton: 创建adapter");
         view_pager.setAdapter(new MyFragmentAdapter(getSupportFragmentManager(), getLifecycle(), fragment_list));
         Log.e(TAG, "initListButton: 创建结束");
+        view_pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                refreshTextColor(position);
+            }
+        });
 
 
     }
 
 
+    public void refreshTextColor(int index) {   // 选项颜色
+        for (TextView i : view_text) {
+            i.setTextColor(getResources().getColor(R.color.grey_heavy, getTheme()));
+            i.setBackgroundColor(getResources().getColor(R.color.white, getTheme()));
+        }
+        view_text.get(index).setTextColor(getResources().getColor(R.color.blue, getTheme()));
+        view_text.get(index).setBackgroundColor(getResources().getColor(R.color.grey, getTheme()));
+    }
+
     // 学习fragment
-//    @Override
-//    public void onClick(View v) {
-//        int id = v.getId();
-//        for(TextView i : view_text)
-//        {
-//            i.setTextColor(getResources().getColor(R.color.grey_heavy, getTheme()));
-//            i.setBackgroundColor(getResources().getColor(R.color.white, getTheme()));
-//        }
-//        if (id == R.id.view2_tv1) {
-//            Bundle bundle = new Bundle();
-//            bundle.putString("text", "传递参数！");
-//            PracticeFragment1 practiceFragment1 = new PracticeFragment1();
-//            practiceFragment1.setArguments(bundle);
-//            replaceFragment(practiceFragment1);
-//            view_text.get(0).setTextColor(getResources().getColor(R.color.blue, getTheme()));
-//            view_text.get(0).setBackgroundColor(getResources().getColor(R.color.grey, getTheme()));
-//        } else if (id == R.id.view2_tv2) {
-//            PracticeFragment2 practiceFragment2 = new PracticeFragment2();
-//            practiceFragment2.setFragmentcallback(new IFragmentCallback() {
-//                @Override
-//                public void sendToActivity(String string) {
-//                    Toast.makeText(PracticeChartActivity.this, string, Toast.LENGTH_SHORT).show();
-//                }
-//
-//                @Override
-//                public String getFromActivity(String string) {
-//
-//                    return "传给fragment！！！";
-//                }
-//            });
-//
-//            replaceFragment(practiceFragment2);
-//            view_text.get(1).setTextColor(getResources().getColor(R.color.blue, getTheme()));
-//            view_text.get(1).setBackgroundColor(getResources().getColor(R.color.grey, getTheme()));
-//        }
-//    }
-//
-//    private void replaceFragment(Fragment fragment) {
-//        FragmentManager supportFragmentManager = getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.viewpager, fragment);
-////        fragmentTransaction.addToBackStack(null);
-//        fragmentTransaction.commit();
-//    }
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        int index = 0;
+
+        if (id == R.id.view2_tv1) {
+            index = 0;
+        } else if (id == R.id.view2_tv2) {
+            index = 1;
+        } else if (id == R.id.view2_tv3) {
+            index = 2;
+        } else if (id == R.id.view2_tv4) {
+            index = 3;
+        } else if (id == R.id.view2_tv5) {
+            index = 4;
+        } else if (id == R.id.view2_tv6) {
+            index = 5;
+        }
+
+        refreshTextColor(index);
+        view_pager.setCurrentItem(index, false);
+
+
+    }
 }
