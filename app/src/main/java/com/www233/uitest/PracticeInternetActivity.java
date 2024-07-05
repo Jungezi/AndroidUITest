@@ -61,14 +61,14 @@ public class PracticeInternetActivity extends AppCompatActivity {
 
     private void httpInit() {
 
-        okHttpClient = new HttpConnect(new Handler(Looper.myLooper()){
+        okHttpClient = new HttpConnect(new Handler(new Handler.Callback() {
             @Override
-            public void handleMessage(@NonNull Message msg) {
-                super.handleMessage(msg);
+            public boolean handleMessage(@NonNull Message msg) {
                 String str = msg.obj.toString();
                 tv.setText(str);
+                return false;
             }
-        });
+        }));
     }
 
     public void getSync(View view) {
