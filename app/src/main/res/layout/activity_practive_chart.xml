@@ -113,7 +113,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tableLayout">
 
         <LinearLayout
-            android:id="@+id/liearLayout"
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -136,35 +136,35 @@
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="12dp"
                     android:text="参考买盘"
-                    android:textColor="@color/black_use" />
+                    android:textColor="@color/black_use"
+                    android:textSize="12sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:background="@color/red_light"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    android:paddingTop="7.5dp"
+                    android:paddingEnd="14dp"
+                    android:paddingBottom="7.5dp">
 
                     <TextView
                         android:id="@+id/textView9"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@color/red_light"
-                        android:paddingLeft="14dp"
-                        android:paddingTop="7.5dp"
-                        android:paddingBottom="7.5dp"
                         android:text="74.891"
-                        android:textColor="@color/black_use" />
+                        android:textColor="@color/black_use"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/textView10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/red_light"
-                        android:paddingTop="7.5dp"
-                        android:paddingRight="14dp"
-                        android:paddingBottom="7.5dp"
                         android:text="+6.065%"
-                        android:textColor="@color/red" />
+                        android:textColor="@color/red"
+                        android:textSize="12sp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -184,35 +184,36 @@
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="12dp"
                     android:text="参考买盘"
-                    android:textColor="@color/black_use" />
+                    android:textColor="@color/black_use"
+                    android:textSize="12sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:background="@color/green_light"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    android:paddingTop="7.5dp"
+                    android:paddingEnd="14dp"
+                    android:paddingBottom="7.5dp">
 
                     <TextView
                         android:id="@+id/textView8"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@color/green_light"
-                        android:paddingLeft="15dp"
-                        android:paddingTop="7.5dp"
-                        android:paddingBottom="7.5dp"
                         android:text="74.891"
-                        android:textColor="@color/black_use" />
+                        android:textColor="@color/black_use"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/textView11"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/green_light"
-                        android:paddingTop="7.5dp"
-                        android:paddingRight="14dp"
-                        android:paddingBottom="7.5dp"
+                        android:layout_gravity="center"
                         android:text="+6.065%"
-                        android:textColor="@color/red" />
+                        android:textColor="@color/red"
+                        android:textSize="12sp" />
                 </LinearLayout>
 
 
@@ -228,7 +229,7 @@
             android:layout_marginEnd="14dp"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/liearLayout">
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
             <ImageView
                 android:layout_width="wrap_content"
