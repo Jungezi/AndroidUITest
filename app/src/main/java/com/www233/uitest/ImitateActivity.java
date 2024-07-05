@@ -26,6 +26,7 @@ public class ImitateActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        Log.e(TAG, "onCreate: done.");
     }
 
     public void MoreList(View view) {

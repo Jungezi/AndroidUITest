@@ -39,4 +39,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PracticeChartActivity.class);
         startActivity(intent);
     }
+
+    public void toPractice2(View view) {
+        Intent intent = new Intent(this, PracticeInternetActivity.class);
+        startActivity(intent);
+    }
 }

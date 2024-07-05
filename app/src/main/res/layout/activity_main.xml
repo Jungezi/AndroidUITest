@@ -6,25 +6,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white_approx"
-    tools:context=".MainActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="模仿ui"
-        android:textSize="15dp"
         android:onClick="toImitate"
-        />
+        android:text="模仿ui"
+        android:textSize="15dp" />
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="买盘查看界面"
-        android:textSize="15dp"
         android:onClick="toPractice1"
-        />
+        android:text="买盘查看界面"
+        android:textSize="15dp" />
 
-
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="toPractice2"
+        android:text="OKHttp测试"
+        android:textSize="15dp" />
 
 
 </LinearLayout>
