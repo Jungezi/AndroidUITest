@@ -18,6 +18,9 @@
             android:name=".PracticeInternetActivity"
             android:exported="false" />
         <activity
+            android:name=".ImitateActivity"
+            android:exported="false" />
+        <activity
             android:name=".PracticeChartActivity"
             android:exported="false" />
         <activity
