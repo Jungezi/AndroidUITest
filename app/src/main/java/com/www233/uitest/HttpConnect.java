@@ -28,6 +28,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+
 public class HttpConnect extends OkHttpClient {
     OkHttpClient httpClient;
     Map<String, List<Cookie>> cookies = new HashMap<>();
@@ -80,7 +81,7 @@ public class HttpConnect extends OkHttpClient {
 
                         Message message = new Message();
                         message.what = 0;
-                        message.obj = "getSync: " + str;
+                        message.obj = str;
 
                         mHandler.sendMessage(message);
 
@@ -94,7 +95,7 @@ public class HttpConnect extends OkHttpClient {
     }
 
 
-    public void getAsync(String url) {
+    public void getAsync(String url, int type) {
         new Thread() {
             @Override
             public void run() {
@@ -115,8 +116,8 @@ public class HttpConnect extends OkHttpClient {
                                 System.out.println("getAsync: " + str);
 
                                 Message message = new Message();
-                                message.what = 0;
-                                message.obj = "getAsync: " + str;
+                                message.what = type;
+                                message.obj = str;
 
                                 mHandler.sendMessage(message);
                             }
@@ -140,7 +141,7 @@ public class HttpConnect extends OkHttpClient {
 
                         Message message = new Message();
                         message.what = 0;
-                        message.obj = "postSync: " + str;
+                        message.obj = str;
 
                         mHandler.sendMessage(message);
                     }
@@ -169,7 +170,7 @@ public class HttpConnect extends OkHttpClient {
 
                         Message message = new Message();
                         message.what = 0;
-                        message.obj = "postAsync: " + str;
+                        message.obj = str;
 
                         mHandler.sendMessage(message);
                     }

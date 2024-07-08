@@ -29,6 +29,12 @@
         android:onClick="toPractice2"
         android:text="OKHttp测试"
         android:textSize="15dp" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="dialog"
+        android:text="创建对话框"
+        android:textSize="15dp" />
 
 
 </LinearLayout>
