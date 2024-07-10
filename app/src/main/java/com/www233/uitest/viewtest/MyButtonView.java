@@ -54,14 +54,11 @@ public class MyButtonView extends LinearLayout {
         TextView tv_down = findViewById(R.id.tv_down);
 
 
-        if(mLayout == 1)
-        {
+        if (mLayout == 1) {
             tv_down.setVisibility(View.GONE);
             tv_up.setTextSize(TypedValue.COMPLEX_UNIT_PX, textsize);
             tv_up.setText(text);
-        }
-        else
-        {
+        } else {
             tv_up.setVisibility(View.GONE);
             tv_down.setTextSize(TypedValue.COMPLEX_UNIT_PX, textsize);
             tv_down.setText(text);
@@ -80,8 +77,8 @@ public class MyButtonView extends LinearLayout {
         mLayout = a.getInt(R.styleable.MyButtonView_BVlayout, 1);
         a.recycle();
 
-        Log.e("myView", "initAttr: " + textsize );
-        Log.e("myView", "initAttr: " + text );
+        Log.e("myView", "initAttr: " + textsize);
+        Log.e("myView", "initAttr: " + text);
 
     }
 

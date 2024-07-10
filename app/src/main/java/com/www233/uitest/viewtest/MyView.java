@@ -42,7 +42,7 @@ public class MyView extends View {
             @Override
             public void onClick(View v) {
                 Log.e("myView", "onClick: ??");
-                ((Activity)context).finish();
+                ((Activity) context).finish();
             }
         });
 
@@ -51,8 +51,7 @@ public class MyView extends View {
                 R.styleable.MyView, defStyleAttr, defStyleRes);
         int n = a.getIndexCount();
 
-        for(int i = 0;i<n;i++)
-        {
+        for (int i = 0; i < n; i++) {
             int attr = a.getIndex(i);
             if (attr == R.styleable.MyView_myTitle) {
                 title = a.getText(attr);
@@ -64,8 +63,8 @@ public class MyView extends View {
         }
         a.recycle();
 
-        Log.e("MyView", "MyView:(title) " + title );
-        Log.e("MyView", "MyView:(content) " + content );
+        Log.e("MyView", "MyView:(title) " + title);
+        Log.e("MyView", "MyView:(content) " + content);
 
     }
 
@@ -78,7 +77,7 @@ public class MyView extends View {
         Path path = new Path();
 
         float half = getHeight() / 2f;
-        float len = getHeight()/4f;
+        float len = getHeight() / 4f;
         paint.setStrokeWidth(8);
 
         paint.setAntiAlias(true);//抗锯齿
@@ -94,19 +93,19 @@ public class MyView extends View {
         paint.setColor(Color.BLACK);
         paint.setStyle(Paint.Style.FILL);
         paint.setTextSize(half);
-        canvas.drawText(title.toString(), len*4, half + half/2 , paint);     // 文字
+        canvas.drawText(title.toString(), len * 4, half + half / 2, paint);     // 文字
         paint.setTextAlign(Paint.Align.RIGHT);
         paint.setTextSize(len);
-        canvas.drawText(content.toString(), getWidth() - len, half + len/2, paint);
+        canvas.drawText(content.toString(), getWidth() - len, half + len / 2, paint);
 
 
         paint.setColor(color);
         paint.setStyle(Paint.Style.FILL);
         path.moveTo(len, half);
-        path.lineTo(len*3, half - len);
-        path.lineTo(len*3,half + len);
+        path.lineTo(len * 3, half - len);
+        path.lineTo(len * 3, half + len);
         path.close();
-        canvas.drawPath(path,paint);    // 三角形
+        canvas.drawPath(path, paint);    // 三角形
 
 
         paint.setColor(R.color.green_light);
@@ -120,8 +119,7 @@ public class MyView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        switch (widthMode)
-        {
+        switch (widthMode) {
             case MeasureSpec.EXACTLY:   // match_parent
                 break;
             case MeasureSpec.AT_MOST:   // wrap_content

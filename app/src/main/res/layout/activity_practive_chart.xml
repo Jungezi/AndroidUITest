@@ -11,14 +11,14 @@
 
     <com.www233.uitest.viewtest.MyView
         android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        app:myTitle="模仿UI"
+        app:myBackground="@color/orange"
         app:myContent="什么都没有WWW"
-        app:myBackground="@color/orange" />
+        app:myTitle="模仿UI" />
 
     <LinearLayout
         android:id="@+id/linearLayout11"
@@ -283,7 +283,6 @@
         <!--            app:layout_constraintTop_toBottomOf="@+id/linearLayout10" />-->
 
 
-        <!--        学习viewpager+fragment 还没有弄完-->
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
@@ -374,4 +373,10 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <fragment
+        android:id="@+id/fm"
+        android:name="com.www233.uitest.charttest.PracticeFragment1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

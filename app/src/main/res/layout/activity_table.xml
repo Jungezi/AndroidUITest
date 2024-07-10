@@ -11,12 +11,12 @@
         android:id="@+id/toolbar2"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        app:myTitle="数字列表"
-        app:myContent="点击不看广告(并没有"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:myBackground="@color/red" />
+        app:myBackground="@color/red"
+        app:myContent="点击不看广告(并没有"
+        app:myTitle="数字列表" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView1"

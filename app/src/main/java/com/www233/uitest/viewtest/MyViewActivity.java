@@ -31,11 +31,11 @@ public class MyViewActivity extends AppCompatActivity {
     }
 
     private void initButton() {
-        MyButtonView mbv  = findViewById(R.id.mbv1);
+        MyButtonView mbv = findViewById(R.id.mbv1);
         mbv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MyViewActivity.this,"click button1!!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyViewActivity.this, "click button1!!!", Toast.LENGTH_SHORT).show();
             }
         });
     }
