@@ -5,18 +5,18 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TableActivity">
+    tools:context=".tabletest.TableActivity">
 
-    <androidx.appcompat.widget.Toolbar
+    <com.www233.uitest.viewtest.MyView
         android:id="@+id/toolbar2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
+        android:layout_height="50dp"
+        app:myTitle="数字列表"
+        app:myContent="点击不看广告(并没有"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:myBackground="@color/red" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView1"

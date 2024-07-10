@@ -11,6 +11,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.www233.uitest.charttest.PracticeChartActivity;
+import com.www233.uitest.httptest.PracticeInternetActivity;
+import com.www233.uitest.viewtest.MyViewActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -43,5 +47,11 @@ public class MainActivity extends AppCompatActivity {
     public void toPractice2(View view) {
         Intent intent = new Intent(this, PracticeInternetActivity.class);
         startActivity(intent);
+    }
+
+    public void myView(View view) {
+        Intent intent = new Intent(this, MyViewActivity.class);
+        startActivity(intent);
+
     }
 }

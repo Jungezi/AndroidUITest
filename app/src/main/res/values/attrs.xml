@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MyView">
+        <attr name="myTitle" format="string"/>
+        <attr name="myContent" format="string"/>
+        <attr name="myBackground" format="color"/>
+        <attr name="mySelect">
+            <enum name="s1" value="1"/>
+            <enum name="s2" value="2"/>
+            <enum name="s3" value="3"/>
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="MyButtonView">
+        <attr name="BVpicture" format="reference"/>
+        <attr name="BVtext" format="string"/>
+        <attr name="BVtextsize" format="dimension"/>
+        <attr name="BVlayout">
+            <enum name="text_up" value="1"/>
+            <enum name="text_down" value="2"/>
+        </attr>
+    </declare-styleable>
+</resources>

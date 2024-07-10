@@ -7,8 +7,18 @@
     android:layout_height="match_parent"
     android:background="@color/grey"
     android:orientation="vertical"
-    tools:context=".PracticeChartActivity">
+    tools:context=".charttest.PracticeChartActivity">
 
+    <com.www233.uitest.viewtest.MyView
+        android:id="@+id/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:myTitle="模仿UI"
+        app:myContent="什么都没有WWW"
+        app:myBackground="@color/orange" />
 
     <LinearLayout
         android:id="@+id/linearLayout11"

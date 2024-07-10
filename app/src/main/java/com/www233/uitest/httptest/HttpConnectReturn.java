@@ -1,4 +1,4 @@
-package com.www233.uitest;
+package com.www233.uitest.httptest;
 
 public class HttpConnectReturn {
     public boolean success;

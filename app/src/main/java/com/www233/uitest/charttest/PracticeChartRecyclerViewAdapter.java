@@ -1,4 +1,4 @@
-package com.www233.uitest;
+package com.www233.uitest.charttest;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.www233.uitest.R;
 
 import java.util.List;
 

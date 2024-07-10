@@ -13,6 +13,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.www233.uitest.tabletest.TableActivity;
+
 public class ImitateActivity extends AppCompatActivity {
 
     private static final String TAG = "ImitateActivity";
@@ -36,17 +38,17 @@ public class ImitateActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void dialog(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("标题")
-                .setMessage("内容")
-                        .setNegativeButton("name", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        });
-        builder.create().show();
-
-    }
+//    public void dialog(View view) {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle("标题")
+//                .setMessage("内容")
+//                        .setNegativeButton("name", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//
+//                            }
+//                        });
+//        builder.create().show();
+//
+//    }
 }

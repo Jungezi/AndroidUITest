@@ -1,10 +1,7 @@
-package com.www233.uitest;
+package com.www233.uitest.httptest;
 
-import android.icu.text.IDNA;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +12,6 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -23,31 +19,18 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.FormBody;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttp;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.internal.LinkedTreeMap;
+import com.www233.uitest.charttest.PracticeChartInfoItem;
+import com.www233.uitest.charttest.PracticeChartRecyclerViewAdapter;
+import com.www233.uitest.R;
+import com.www233.uitest.tabletest.TableItem;
+
 
 public class PracticeInternetActivity extends AppCompatActivity {
     private static final String TAG = "Practice";
@@ -121,6 +104,10 @@ public class PracticeInternetActivity extends AppCompatActivity {
                 }
                 else
                 {
+
+
+
+                    Log.d(TAG, "handleMessage2: " + msg.obj.toString());
                     Gson gson = new Gson();
                     HttpTable json = gson.fromJson(msg.obj.toString(), HttpTable.class);
                     mItemList.clear();
@@ -187,11 +174,11 @@ public class PracticeInternetActivity extends AppCompatActivity {
     }
 
 
-    class MyAdapter extends RecyclerView.Adapter<TableActivity.MyViewHolder> {
+    class MyAdapter extends RecyclerView.Adapter<PracticeInternetActivity.MyViewHolder> {
 
         @NonNull
         @Override
-        public TableActivity.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public PracticeInternetActivity.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             //View view = View.inflate(TableActivity.this, R.layout.list_item, null);
             View holder_view;
 
@@ -204,12 +191,12 @@ public class PracticeInternetActivity extends AppCompatActivity {
                     break;
             }
 
-            return new TableActivity.MyViewHolder(holder_view, viewType);
+            return new PracticeInternetActivity.MyViewHolder(holder_view, viewType);
 
         }
 
         @Override
-        public void onBindViewHolder(@NonNull TableActivity.MyViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull PracticeInternetActivity.MyViewHolder holder, int position) {
             Log.e(TAG, position + ") onBindViewHolder: " + position);
             TableItem tableItem = mItemList.get(position);
             holder.tv_title.setText(tableItem.title);

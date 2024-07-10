@@ -1,4 +1,4 @@
-package com.www233.uitest;
+package com.www233.uitest.charttest;
 
 import android.os.Bundle;
 
@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.www233.uitest.R;
 
 /**
  * A simple {@link Fragment} subclass.

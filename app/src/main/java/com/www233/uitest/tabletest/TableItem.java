@@ -1,4 +1,4 @@
-package com.www233.uitest;
+package com.www233.uitest.tabletest;
 
 import java.util.ArrayList;
 

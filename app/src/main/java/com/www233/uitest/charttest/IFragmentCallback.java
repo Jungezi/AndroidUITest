@@ -1,4 +1,4 @@
-package com.www233.uitest;
+package com.www233.uitest.charttest;
 
 public interface IFragmentCallback {
     void sendToActivity(String string);

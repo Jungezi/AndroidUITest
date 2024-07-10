@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".viewtest.MyViewActivity"
+    android:orientation="vertical">
+
+    <com.www233.uitest.viewtest.MyView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:myTitle="自定义View"
+        app:myContent="by www"
+        app:myBackground="@color/blue" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal">
+
+        <com.www233.uitest.viewtest.MyButtonView
+            android:id="@+id/mbv1"
+            app:BVtext="第一个"
+            app:BVlayout="text_up"
+            android:layout_margin="10dp"
+            app:BVtextsize="15sp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <com.www233.uitest.viewtest.MyButtonView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:BVtext="第2个"
+            app:BVlayout="text_down"
+            android:layout_margin="10dp"
+            app:BVtextsize="15sp" />
+
+        <com.www233.uitest.viewtest.MyButtonView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:BVtext="第3个"
+            app:BVlayout="text_up"
+            android:layout_margin="10dp"
+            app:BVtextsize="20sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

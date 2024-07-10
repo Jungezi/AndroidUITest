@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/red"
     android:orientation="vertical"
-    tools:context=".PracticeFragment2">
+    tools:context=".charttest.PracticeFragment2">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

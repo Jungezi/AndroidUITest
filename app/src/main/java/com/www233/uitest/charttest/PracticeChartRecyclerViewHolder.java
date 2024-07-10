@@ -1,10 +1,12 @@
-package com.www233.uitest;
+package com.www233.uitest.charttest;
 
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.www233.uitest.R;
 
 public class PracticeChartRecyclerViewHolder extends RecyclerView.ViewHolder {
     TextView tv_key;

@@ -1,4 +1,4 @@
-package com.www233.uitest;
+package com.www233.uitest.httptest;
 
 import java.util.List;
 import java.util.Map;

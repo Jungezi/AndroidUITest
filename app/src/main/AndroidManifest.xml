@@ -15,16 +15,19 @@
         android:theme="@style/Theme.UItest"
         tools:targetApi="31">
         <activity
-            android:name=".PracticeInternetActivity"
+            android:name=".viewtest.MyViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".httptest.PracticeInternetActivity"
             android:exported="false" />
         <activity
             android:name=".ImitateActivity"
             android:exported="false" />
         <activity
-            android:name=".PracticeChartActivity"
+            android:name=".charttest.PracticeChartActivity"
             android:exported="false" />
         <activity
-            android:name=".TableActivity"
+            android:name=".tabletest.TableActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

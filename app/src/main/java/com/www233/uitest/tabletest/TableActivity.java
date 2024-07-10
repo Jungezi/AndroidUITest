@@ -1,4 +1,4 @@
-package com.www233.uitest;
+package com.www233.uitest.tabletest;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +17,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Text;
+import com.www233.uitest.R;
 
 import java.util.ArrayList;
 import java.util.List;
