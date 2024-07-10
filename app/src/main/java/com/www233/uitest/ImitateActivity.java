@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewStub;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
@@ -36,6 +37,30 @@ public class ImitateActivity extends AppCompatActivity {
     public void MoreList(View view) {
         Intent intent = new Intent(this, TableActivity.class);
         startActivity(intent);
+    }
+
+    int num = 1;
+    public void showViewStub(View view) {
+        ViewStub vs = null;
+        switch (num)
+        {
+            case 1:
+                vs = findViewById(R.id.vs1);num++;
+                break;
+            case 2:
+                vs = findViewById(R.id.vs2);num++;
+                break;
+            case 3:
+                vs = findViewById(R.id.vs3);num++;
+                break;
+            case 4:
+                vs = findViewById(R.id.vs4);num++;
+                break;
+        }
+        if(vs != null)
+        {
+            vs.inflate();
+        }
     }
 
 //    public void dialog(View view) {

@@ -2,7 +2,7 @@
     <string name="app_name">UItest</string>
     <string name="text_more">更多 ></string>
     <string name="bank_1">广发证券</string>
-    <string name="text_addaccount">⊕  已有账户，立即添加</string>
+    <string name="text_addaccount">⊕  显示按钮</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

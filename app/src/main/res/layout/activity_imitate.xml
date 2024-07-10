@@ -31,15 +31,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-        <include layout="@layout/botton_bottom_word" />
+<!--        <include layout="@layout/botton_bottom_word" />-->
+        <ViewStub
+            android:id="@+id/vs1"
+            android:layout="@layout/botton_bottom_word"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
+        <ViewStub
+            android:id="@+id/vs2"
+            android:layout="@layout/botton_bottom_word"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
+        <ViewStub
+            android:id="@+id/vs3"
+            android:layout="@layout/botton_bottom_word"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
+        <ViewStub
+            android:id="@+id/vs4"
+            android:layout="@layout/botton_bottom_word"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
 
-        <include layout="@layout/botton_bottom_word" />
+<!--        <include layout="@layout/botton_bottom_word" />-->
 
-        <include layout="@layout/botton_bottom_word" />
+<!--        <include layout="@layout/botton_bottom_word" />-->
 
-        <include layout="@layout/botton_bottom_word" />
+<!--        <include layout="@layout/botton_bottom_word" />-->
 
-        <include layout="@layout/botton_bottom_word" />
+<!--        <include layout="@layout/botton_bottom_word" />-->
 
     </LinearLayout>
 
@@ -85,23 +105,16 @@
         <LinearLayout
             android:id="@+id/linearLayout4"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:paddingTop="10dp"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
             <include
-                android:id="@+id/include"
-                layout="@layout/botton_right_word"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
+                layout="@layout/botton_right_word"/>
 
             <include
-                layout="@layout/botton_right_word"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
+                layout="@layout/botton_right_word"/>
         </LinearLayout>
 
         <LinearLayout
@@ -174,6 +187,7 @@
             android:gravity="center"
             android:text="@string/text_addaccount"
             android:textColor="@color/blue"
+            android:onClick="showViewStub"
             android:textSize="20sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

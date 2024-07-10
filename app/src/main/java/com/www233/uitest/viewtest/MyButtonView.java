@@ -19,7 +19,7 @@ import androidx.annotation.Nullable;
 
 import com.www233.uitest.R;
 
-public class MyButtonView extends FrameLayout {
+public class MyButtonView extends LinearLayout {
     Drawable picture;
     float textsize;
     CharSequence text;
@@ -47,11 +47,11 @@ public class MyButtonView extends FrameLayout {
     }
 
     private void initView(Context context) {
+        this.setOrientation(LinearLayout.VERTICAL);
         LayoutInflater.from(context).inflate(R.layout.my_view_button, this, true);
         ImageView iv = findViewById(R.id.iv);
         TextView tv_up = findViewById(R.id.tv_up);
         TextView tv_down = findViewById(R.id.tv_down);
-        linearLayout = findViewById(R.id.button);
 
 
         if(mLayout == 1)
@@ -85,9 +85,5 @@ public class MyButtonView extends FrameLayout {
 
     }
 
-    public void setOnClickListener(OnClickListener onclicklistener)
-    {
-        linearLayout.setOnClickListener(onclicklistener);
-    }
 
 }
