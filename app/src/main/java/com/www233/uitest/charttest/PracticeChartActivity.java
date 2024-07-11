@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -142,8 +143,33 @@ public class PracticeChartActivity extends AppCompatActivity implements View.OnC
         }
 
         refreshTextColor(index);
-        view_pager.setCurrentItem(index, false);
+        view_pager.setCurrentItem(index, true);
 
 
+    }
+
+    int cnt = 0;
+    List<PracticeFragment> fragment_list_2 = new ArrayList<>();
+
+    public void add_fragment(View view) {
+
+        PracticeFragment fragment_dir = PracticeFragment.newInstance("创建fragment的" + (cnt++), getResources().getColor(R.color.green_light, getTheme()));
+        fragment_list_2.add(fragment_dir);
+        getSupportFragmentManager().beginTransaction().add(R.id.fl, fragment_dir).commit();
+    }
+
+    public void remove_fragment(View view) {
+        if (cnt > 0) {
+            getSupportFragmentManager().beginTransaction().remove(fragment_list_2.get(--cnt)).commit();
+            fragment_list_2.remove(cnt);
+        }
+    }
+
+    public void replace_fragment(View view) {
+        cnt = 0;
+        PracticeFragment fragment_dir = PracticeFragment.newInstance("重头再来的fragment!" + (cnt++), getResources().getColor(R.color.red_light, getTheme()));
+        fragment_list_2.clear();
+        fragment_list_2.add(fragment_dir);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl, fragment_dir).commit();
     }
 }
