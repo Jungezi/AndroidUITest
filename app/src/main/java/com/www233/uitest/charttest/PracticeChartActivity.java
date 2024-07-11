@@ -9,6 +9,9 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -37,6 +40,11 @@ public class PracticeChartActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_practive_chart);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         setTableInfo();     // Recycler创建
 
@@ -149,27 +157,31 @@ public class PracticeChartActivity extends AppCompatActivity implements View.OnC
     }
 
     int cnt = 0;
-    List<PracticeFragment> fragment_list_2 = new ArrayList<>();
 
     public void add_fragment(View view) {
 
         PracticeFragment fragment_dir = PracticeFragment.newInstance("创建fragment的" + (cnt++), getResources().getColor(R.color.green_light, getTheme()));
-        fragment_list_2.add(fragment_dir);
-        getSupportFragmentManager().beginTransaction().add(R.id.fl, fragment_dir).commit();
+
+        //getSupportFragmentManager().beginTransaction().add(R.id.fl, fragment_dir).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.fl, fragment_dir, "fg").addToBackStack("1").commit();
+
     }
 
     public void remove_fragment(View view) {
         if (cnt > 0) {
-            getSupportFragmentManager().beginTransaction().remove(fragment_list_2.get(--cnt)).commit();
-            fragment_list_2.remove(cnt);
+            //Fragment fragment_dir = getSupportFragmentManager().findFragmentById(R.id.fl);
+            Fragment fragment_dir = getSupportFragmentManager().findFragmentByTag("fg");
+            cnt--;
+            if (fragment_dir != null) {
+                getSupportFragmentManager().beginTransaction().remove(fragment_dir).addToBackStack("1").commit();
+            }
         }
     }
 
     public void replace_fragment(View view) {
         cnt = 0;
         PracticeFragment fragment_dir = PracticeFragment.newInstance("重头再来的fragment!" + (cnt++), getResources().getColor(R.color.red_light, getTheme()));
-        fragment_list_2.clear();
-        fragment_list_2.add(fragment_dir);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fl, fragment_dir).commit();
+        //getSupportFragmentManager().beginTransaction().replace(R.id.fl, fragment_dir).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl, fragment_dir, "fg").addToBackStack("1").commit();
     }
 }

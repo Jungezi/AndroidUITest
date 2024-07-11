@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+<!--        <variable-->
+<!--            name="vm"-->
+<!--            type="com.www233.uitest.mvvmtest.MyViewModel" />-->
+        <variable
+            name="vm2"
+            type="com.www233.uitest.mvvmtest.MyObservable" />
+        <variable
+            name="listener"
+            type="com.www233.uitest.mvvmtest.MvvmTestActivity.Listener" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".mvvmtest.MvvmTestActivity">
+
+        <com.www233.uitest.viewtest.MyView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:myBackground="@color/blue"
+            app:myContent="计数器罢了"
+            app:myTitle="MVVM" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/bt_cnt_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:onClick="@{()->listener.plusone()}"
+                android:text="计数" />
+
+            <Button
+                android:id="@+id/bt_cnt_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:onClick="@{()->listener.minusone()}"
+                android:text="减少" />
+
+            <Button
+                android:id="@+id/bt_cnt_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:onClick="@{()->listener.clear()}"
+                android:text="重置" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_cnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text=""
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tv_cnt2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@{String.valueOf(vm2.cnt) ,default=11}"
+            android:textSize="20sp" />
+    </LinearLayout>
+</layout>

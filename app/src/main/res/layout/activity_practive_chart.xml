@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:myBackground="@color/orange"
-        app:myContent="为什么就你没有头啊！！！"
+        app:myContent="有头了好耶！！！"
         app:myTitle="买盘查看界面" />
 
     <LinearLayout
@@ -414,7 +414,7 @@
     </LinearLayout>
 
 
-    <LinearLayout
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

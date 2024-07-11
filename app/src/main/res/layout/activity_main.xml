@@ -35,6 +35,12 @@
         android:onClick="myView"
         android:text="自定义View"
         android:textSize="15dp" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="toMvvm"
+        android:text="MVVM测试"
+        android:textSize="15dp" />
 
 
 </LinearLayout>
