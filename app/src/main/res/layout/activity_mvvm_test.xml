@@ -78,15 +78,15 @@
             android:text="@{String.valueOf(vm2.cnt) ,default=11}"
             android:textSize="20sp" />
 
-        <com.www233.uitest.alterButtonList.AlterButtonListView
-            android:id="@+id/blv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:padding="50dp"
-            app:button_size="3"
-            app:default_check="2"
-            app:max_size="5" />
+<!--        <com.www233.uitest.alterButtonList.AlterButtonListView-->
+<!--            android:id="@+id/blv"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@color/white"-->
+<!--            android:padding="50dp"-->
+<!--            app:button_size="3"-->
+<!--            app:default_check="2"-->
+<!--            app:max_size="5" />-->
 
 
     </LinearLayout>

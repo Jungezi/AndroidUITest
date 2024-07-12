@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,14 +15,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.www233.uitest.R;
 import com.www233.uitest.alterButtonList.AlterButtonListView;
-import com.www233.uitest.alterButtonList.OnSelectedButtonChangedListener;
 import com.www233.uitest.databinding.ActivityMvvmTestBinding;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MvvmTestActivity extends AppCompatActivity {
     private static final String TAG = "myView";
@@ -54,18 +56,25 @@ public class MvvmTestActivity extends AppCompatActivity {
     }
 
     private void initButtonList() {
-        AlterButtonListView alterButtonListView = findViewById(R.id.blv);
-        alterButtonListView.setButtonText(0, "天地")
-                .setButtonText(1, "银行")
-                .setButtonText(2, "地府");
+        LinearLayout linearLayout = findViewById(R.id.main);
+        List<String> list = new ArrayList<>();
+        list.add("111");
+        list.add("222");
+        list.add("111");
+        list.add("222");
+        list.add("111");
+        list.add("222");
+        list.add("2223232");
+        list.add("223222");
+        AlterButtonListView alterButtonListView = new AlterButtonListView(this, 5, list);
+        linearLayout.addView(alterButtonListView);
+        alterButtonListView.setCheck(2);
 
-        alterButtonListView.setCheck(1);
-        alterButtonListView.setCheck(3);
 
-        alterButtonListView.setOnSelectedButtonChangedListener(new OnSelectedButtonChangedListener() {
+        alterButtonListView.setOnSelectedButtonChangedListener(new AlterButtonListView.OnSelectedButtonChangedListener() {
             @Override
             public void changed(int position) {
-                Toast.makeText(MvvmTestActivity.this,String.valueOf(position), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MvvmTestActivity.this, String.valueOf(position), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -74,10 +83,10 @@ public class MvvmTestActivity extends AppCompatActivity {
         preferences = getPreferences(Context.MODE_PRIVATE);
         int num = preferences.getInt("CNT", 0);
         Log.e(TAG, "initViewModel: ");
-        myViewModel = new ViewModelProvider(this,new MyViewModelFactory(num)).get(MyViewModel.class);
+        myViewModel = new ViewModelProvider(this, new MyViewModelFactory(num)).get(MyViewModel.class);
         myObservable = new MyObservable(num);
 
-        Log.e(TAG, "initViewModel: vm1" );
+        Log.e(TAG, "initViewModel: vm1");
         myViewModel.getCnt().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
