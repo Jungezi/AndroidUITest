@@ -19,4 +19,14 @@
             <enum name="text_down" value="2"/>
         </attr>
     </declare-styleable>
+    
+    <declare-styleable name="AlterButtonListView">
+        <attr name="button_size" format="integer"/>
+        <attr name="max_size" format="integer"/>
+        <attr name="more_hint" format="string"/>
+        <attr name="default_check" format="integer"/>
+        <attr name="text_size" format="integer"/>
+        
+    </declare-styleable>
+    
 </resources>

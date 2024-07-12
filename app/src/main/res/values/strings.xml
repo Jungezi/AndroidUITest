@@ -3,6 +3,8 @@
     <string name="text_more">更多 ></string>
     <string name="bank_1">广发证券</string>
     <string name="text_addaccount">⊕  显示按钮</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="more_hint_default">更多 ></string>
+    <string name="button_item_default">按钮</string>
 </resources>

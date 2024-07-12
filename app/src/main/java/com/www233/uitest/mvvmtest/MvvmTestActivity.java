@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +19,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.www233.uitest.R;
+import com.www233.uitest.alterButtonList.AlterButtonListView;
+import com.www233.uitest.alterButtonList.OnSelectedButtonChangedListener;
 import com.www233.uitest.databinding.ActivityMvvmTestBinding;
 
 public class MvvmTestActivity extends AppCompatActivity {
@@ -41,10 +44,30 @@ public class MvvmTestActivity extends AppCompatActivity {
 
         getLifecycle().addObserver(new MyObserver(getLifecycle()));
         initViewModel();
+
+        initButtonList();
+
 //        initButton();
 //        initText();
 
 
+    }
+
+    private void initButtonList() {
+        AlterButtonListView alterButtonListView = findViewById(R.id.blv);
+        alterButtonListView.setButtonText(0, "天地")
+                .setButtonText(1, "银行")
+                .setButtonText(2, "地府");
+
+        alterButtonListView.setCheck(1);
+        alterButtonListView.setCheck(3);
+
+        alterButtonListView.setOnSelectedButtonChangedListener(new OnSelectedButtonChangedListener() {
+            @Override
+            public void changed(int position) {
+                Toast.makeText(MvvmTestActivity.this,String.valueOf(position), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void initViewModel() {
