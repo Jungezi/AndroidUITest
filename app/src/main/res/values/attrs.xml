@@ -26,6 +26,9 @@
         <attr name="more_hint" format="string"/>
         <attr name="default_check" format="integer"/>
         <attr name="text_size" format="integer"/>
+        <attr name="button_style" format="reference"/>
+        <attr name="button_style_others" format="reference"/>
+        <attr name="other_list_style" format="reference"/>
         
     </declare-styleable>
     

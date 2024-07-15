@@ -46,7 +46,6 @@ public class MvvmTestActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
         getLifecycle().addObserver(new MyObserver(getLifecycle()));
         initViewModel();
 

@@ -31,6 +31,7 @@ public class AlterButtonListView extends RadioGroup {
     private static final String TAG = "AlterButtonListView";
 
     private int button_size = 0, max_size, default_check = 0, text_size = 13, show_size, last_check = 0;
+    private int button_style, button_style_others, other_list_style;
     private String more_hint = getResources().getString(R.string.more_hint_default);
     private List<RadioButton> radio_button = new ArrayList<>();
     private List<String> radio_button_others = new ArrayList<>();
@@ -162,7 +163,7 @@ public class AlterButtonListView extends RadioGroup {
     }
 
     /**
-     * list不变，更换使用当前的布局样式
+     * list不变，更换使用当前的布局样式，选中选项不变
      */
     public void refresh() {
         int true_last_check = last_check;
@@ -172,7 +173,7 @@ public class AlterButtonListView extends RadioGroup {
     }
 
     /**
-     * 用list，替换当前的按钮
+     * 用list，替换当前的按钮，并把当前选中置为默认选中的按钮
      *
      * @param list 按钮名称的列表
      */
@@ -191,7 +192,7 @@ public class AlterButtonListView extends RadioGroup {
         Log.e(TAG, "AlterButtonListView: addView");
 
         LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        LayoutParams layoutParams_space = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f);
+        LayoutParams layoutParams_space = new LayoutParams(0, LayoutParams.MATCH_PARENT, 1f);
 
         all_button.addAll(list);
         int add_size = list.size();
@@ -220,7 +221,7 @@ public class AlterButtonListView extends RadioGroup {
                 rb.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        setCheck(last_check);
+                        setCheck(last_check);   // 特殊：只有点击更多里面的按钮，才会改变当前选中项
                         Log.e(TAG, "setClick: " + last_check);
                         RecyclerView recyclerView = initDialog();   // 弹出更多按钮的对话框
                         dialog = new AlertDialog.Builder(context)
@@ -286,7 +287,7 @@ public class AlterButtonListView extends RadioGroup {
             Log.d(TAG, "setCheck: 设置index过大 调整为0");
         }
         last_check = index;
-        if (index == -1 || index > show_size) index = show_size;
+        if (index == -1 || index > show_size) index = show_size;    // 更多选项
         for (int i = 0; i < show_size; i++) {
             radio_button.get(i).setChecked(false);
         }
@@ -311,6 +312,10 @@ public class AlterButtonListView extends RadioGroup {
         last_check = position;
         Log.e(TAG, "callSelectedButtonChangedListener: " + last_check);
         onSelectedButtonChangedListener.changed(position);
+    }
+
+    private  <T> T getStyle(int style, T view){
+        return view;
     }
 
     @NonNull
@@ -363,7 +368,9 @@ public class AlterButtonListView extends RadioGroup {
         default_check = a.getInt(R.styleable.AlterButtonListView_default_check, 0); // 从0开始给按钮编号
         text_size = a.getInt(R.styleable.AlterButtonListView_text_size, 13);
         show_size = Math.min(button_size, max_size);
-
+        button_style = a.getResourceId(R.styleable.AlterButtonListView_button_style, R.style.alter_button_default);
+        button_style_others = a.getResourceId(R.styleable.AlterButtonListView_button_style_others, R.style.alter_button_default);
+        other_list_style = a.getResourceId(R.styleable.AlterButtonListView_other_list_style, R.style.other_list_default);
 
         more_hint = a.getString(R.styleable.AlterButtonListView_more_hint);
         if (more_hint == null) more_hint = getResources().getString(R.string.more_hint_default);
@@ -381,7 +388,7 @@ public class AlterButtonListView extends RadioGroup {
         @Override
         public AlterButtonListView.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             /* 更多界面的TextView格式
-            * */
+             * */
             TextView textView = new TextView(context);
             textView.setGravity(Gravity.CENTER);
 //            layoutParams.gravity = Gravity.CENTER;
@@ -390,7 +397,7 @@ public class AlterButtonListView extends RadioGroup {
             textView.setLayoutParams(layoutParams);
             textView.setTextSize(text_size);
             textView.setPadding(0, 30, 0, 30);
-            if (viewType == 1) {    // 已选中
+            if (viewType == 1) {    // 已选中选项的颜色变化
                 textView.setTextColor(getResources().getColor(R.color.blue, null));
                 textView.setBackground(getResources().getDrawable(R.color.grey, null));
             }
@@ -414,7 +421,7 @@ public class AlterButtonListView extends RadioGroup {
 
         @Override
         public int getItemViewType(int position) {
-            if(position == last_check - max_size) return 1;
+            if (position == last_check - max_size) return 1;
             else return 0;
         }
 

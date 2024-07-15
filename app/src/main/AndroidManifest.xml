@@ -15,6 +15,9 @@
         android:theme="@style/Theme.UItest"
         tools:targetApi="31">
         <activity
+            android:name=".flowtest.FlowLayoutTestActivity"
+            android:exported="false" />
+        <activity
             android:name=".mvvmtest.MvvmTestActivity"
             android:exported="false" />
         <activity
