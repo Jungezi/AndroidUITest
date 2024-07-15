@@ -31,6 +31,9 @@ public class MvvmTestActivity extends AppCompatActivity {
     SharedPreferences preferences;
     ActivityMvvmTestBinding viewDataBinding;
     MyObservable myObservable;
+    int button_cnt = 0, op_time = 0;
+    LinearLayout linearLayout;
+    AlterButtonListView alterButtonListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,26 +58,22 @@ public class MvvmTestActivity extends AppCompatActivity {
 
     }
 
+
     private void initButtonList() {
-        LinearLayout linearLayout = findViewById(R.id.main);
+        linearLayout = findViewById(R.id.main);
         List<String> list = new ArrayList<>();
-        list.add("111");
-        list.add("222");
-        list.add("111");
-        list.add("222");
-        list.add("111");
-        list.add("222");
-        list.add("2223232");
-        list.add("223222");
-        AlterButtonListView alterButtonListView = new AlterButtonListView(this, 5, list);
+        for(;button_cnt < 3; button_cnt++)
+        {
+            list.add("按钮" + button_cnt);
+//            list.add("按钮" );
+        }
+        alterButtonListView = new AlterButtonListView(this, 4, list);
         linearLayout.addView(alterButtonListView);
         alterButtonListView.setCheck(2);
-
-
         alterButtonListView.setOnSelectedButtonChangedListener(new AlterButtonListView.OnSelectedButtonChangedListener() {
             @Override
             public void changed(int position) {
-//                Toast.makeText(MvvmTestActivity.this, String.valueOf(position), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "changed: 按钮" + position );
             }
         });
     }
@@ -100,6 +99,47 @@ public class MvvmTestActivity extends AppCompatActivity {
         viewDataBinding.setListener(new Listener());
 //        viewDataBinding.setLifecycleOwner(this);
         Log.e(TAG, "initViewModel: done");
+    }
+
+    public void addButton(View view) {
+        op_time ++;
+        List<String> list = new ArrayList<>();
+        list.add(op_time + "按钮" + ++button_cnt);
+        alterButtonListView.push(list);
+
+    }
+
+    public void replaceButton(View view) {
+        op_time ++;
+        button_cnt = 0;
+        List<String> list = new ArrayList<>();
+        for(;button_cnt < 4; button_cnt++)
+        {
+            list.add(op_time + "按钮" + button_cnt);
+        }
+        alterButtonListView.replace(list);
+    }
+
+    public void clearButton(View view) {
+        op_time ++;
+        button_cnt = 0;
+        alterButtonListView.clear();
+    }
+
+    public void fontplus(View view) {
+        alterButtonListView.setText_size(alterButtonListView.getText_size() + 1);
+    }
+
+    public void fontminus(View view) {
+        alterButtonListView.setText_size(alterButtonListView.getText_size() - 1);
+    }
+
+    public void maxplus(View view) {
+        alterButtonListView.setMax_size(alterButtonListView.getMax_size() + 1);
+    }
+
+    public void maxminus(View view) {
+        alterButtonListView.setMax_size(alterButtonListView.getMax_size() - 1);
     }
 
 

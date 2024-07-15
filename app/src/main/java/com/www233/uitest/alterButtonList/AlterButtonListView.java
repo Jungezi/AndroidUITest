@@ -1,22 +1,16 @@
 package com.www233.uitest.alterButtonList;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -25,16 +19,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.www233.uitest.R;
-import com.www233.uitest.httptest.PracticeInternetActivity;
-import com.www233.uitest.tabletest.TableActivity;
-import com.www233.uitest.tabletest.TableItem;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,14 +30,50 @@ import java.util.List;
 public class AlterButtonListView extends RadioGroup {
     private static final String TAG = "AlterButtonListView";
 
+    private int button_size = 0, max_size, default_check = 0, text_size = 13, show_size, last_check = 0;
+    private String more_hint = getResources().getString(R.string.more_hint_default);
+    private List<RadioButton> radio_button = new ArrayList<>();
+    private List<String> radio_button_others = new ArrayList<>();
+    private List<String> all_button = new ArrayList<>();
+    private Context context;
+    private Point point;
+    private AlertDialog dialog;
+    private OnSelectedButtonChangedListener onSelectedButtonChangedListener;
+
+    public AlterButtonListView(Context context) {
+        this(context, (AttributeSet) null);
+    }
+
+    public AlterButtonListView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initBase(context);
+        initAttr(attrs);
+    }
+
+    public AlterButtonListView(Context context, int max_size) {
+        this(context, max_size, null);
+    }
+
+    public AlterButtonListView(Context context, int max_size, @Nullable List<String> list) {
+        super(context);
+        this.max_size = max_size;
+        initBase(context);
+        push(list);
+    }
 
     /**
      * 设置最多的显示个数
      *
-     * @param button_size 显示数量
+     * @param max_size 显示数量
      */
-    public void setButton_size(int button_size) {
-        this.button_size = button_size;
+    public void setMax_size(int max_size) {
+        try {
+            if (max_size <= 0) throw new Exception("设置的显示个数太小");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        this.max_size = max_size;
+        refresh();
     }
 
     public int getMax_size() {
@@ -69,27 +93,21 @@ public class AlterButtonListView extends RadioGroup {
     }
 
     public void setText_size(int text_size) {
+        try {
+            if (max_size <= 0) throw new Exception("设置的字体大小太小");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         this.text_size = text_size;
-    }
-
-    public void setShow_size(int show_size) {
-        this.show_size = show_size;
+        refresh();
     }
 
     public void setMore_hint(String more_hint) {
         this.more_hint = more_hint;
+        setButtonText(-1, more_hint);
     }
 
-    private int button_size, max_size, default_check = 0, text_size = 13, show_size, last_check = 0;
-    private String more_hint = getResources().getString(R.string.more_hint_default);
-    private List<RadioButton> radio_button = new ArrayList<>();
-    private List<String> radio_button_others = new ArrayList<>();
-    private Context context;
-    private Point point;
-    private AlertDialog dialog;
-    private OnSelectedButtonChangedListener onSelectedButtonChangedListener;
-
-    private void alldo(Context context) {
+    private void initBase(Context context) {
         this.context = context;
         WindowManager systemService = (WindowManager) (context.getApplicationContext().getSystemService(Context.WINDOW_SERVICE));
         point = new Point();
@@ -99,76 +117,88 @@ public class AlterButtonListView extends RadioGroup {
         this.setBackground(getResources().getDrawable(R.color.white, context.getTheme()));
         this.setPadding(0, 50, 0, 50);
 
+        show_size = Math.min(button_size, max_size);
+
+        // 主界面，space整理布局
+        LayoutParams layoutParams_space = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f);
+        Space space = getSpace(layoutParams_space);
+        addView(space);
+
     }
-
-    public AlterButtonListView(Context context) {
-        this(context, (AttributeSet) null);
-    }
-
-    public AlterButtonListView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        alldo(context);
-        initAttr(attrs);
-    }
-
-
-    public AlterButtonListView(Context context, int max_size) {
-        this(context, max_size, null);
-    }
-
-    public AlterButtonListView(Context context, int max_size, @Nullable List<String> list) {
-        super(context);
-        alldo(context);
-        this.max_size = max_size;
-        if (list != null) initViewFromList(list);
-    }
-
 
     /**
      * 加入按钮list
      *
-     * @param list
+     * @param list 按钮名称的列表
      */
-    public void push(@NonNull List<String> list) {
-        initViewFromList(list);
+    public void push(List<String> list) {
+        if (list == null || list.isEmpty()) return;
+        int add_size = list.size();
+
+        if (button_size + add_size < max_size) {
+            addToViewFromList(list, add_size);
+        } else if (button_size < max_size) {
+            addToViewFromList(list, max_size - button_size);
+        } else {
+            addToViewFromList(list, 0);
+        }
     }
 
     /**
      * 清空
      */
     public void clear() {
+        button_size = 0;
+        show_size = 0;
+        last_check = default_check;
+        all_button.clear();
+        radio_button.clear();
+        radio_button_others.clear();
+        removeAllViewsInLayout();
 
+        LayoutParams layoutParams_space = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f);
+        Space space = getSpace(layoutParams_space);
+        addView(space);
     }
 
     /**
-     * 用list替换当前的按钮
+     * list不变，更换使用当前的布局样式
+     */
+    public void refresh() {
+        int true_last_check = last_check;
+        replace(new ArrayList<>(all_button));
+        if (true_last_check < button_size && true_last_check != last_check)
+            setCheck(true_last_check);  // 设置选中项为上一次选中的
+    }
+
+    /**
+     * 用list，替换当前的按钮
      *
-     * @param list
+     * @param list 按钮名称的列表
      */
     public void replace(@NonNull List<String> list) {
-
+        clear();
+        push(list);
     }
 
     /**
-     * 通过list创建视图
+     * 把list中的前add_to_view个按钮加入主界面，剩下的加入更多界面
      *
-     * @param list
+     * @param list        按钮名称列表
+     * @param add_to_view 加入主界面个数
      */
-    private void initViewFromList(@NonNull List<String> list) {
+    private void addToViewFromList(@NonNull List<String> list, int add_to_view) {
         Log.e(TAG, "AlterButtonListView: addView");
 
         LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         LayoutParams layoutParams_space = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f);
 
-        button_size = list.size();
-        show_size = Math.min(button_size, max_size);
+        all_button.addAll(list);
+        int add_size = list.size();
 
-        Space space = getSpace(layoutParams_space);
-        addView(space);
-
-        for (int i = 0; i < show_size; i++) {
+        Space space;
+        for (int i = 0; i < add_to_view; i++) {
             RadioButton rb = getRadioButton(layoutParams, list.get(i));
-//            rb.setChecked(i == default_check);
             radio_button.add(rb);
             int finalI = i;
             rb.setOnClickListener(v -> callSelectedButtonChangedListener(finalI));
@@ -178,41 +208,46 @@ public class AlterButtonListView extends RadioGroup {
             addView(space);
         }
 
-        if (button_size > max_size) {
+        if (add_size > add_to_view) {
+            if (button_size <= max_size) { // 在此之前没有创建过更多按钮且需要创建
 
-            RadioButton rb = getRadioButton(layoutParams, getResources().getString(R.string.more_hint_default));
-//            rb.setChecked(default_check >= show_size);  // 选中更多
-            addView(rb);
-            space = getSpace(layoutParams_space);
-            addView(space);
-            radio_button.add(rb);
+                RadioButton rb = getRadioButton(layoutParams, getResources().getString(R.string.more_hint_default));
+                addView(rb);
+                space = getSpace(layoutParams_space);
+                addView(space);
+                radio_button.add(rb);
 
+                rb.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        setCheck(last_check);
+                        Log.e(TAG, "setClick: " + last_check);
+                        RecyclerView recyclerView = initDialog();   // 弹出更多按钮的对话框
+                        dialog = new AlertDialog.Builder(context)
+                                .setView(recyclerView)
+                                .create();
 
-            for (int i = max_size; i < button_size; i++) {
+                        WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
+                        dialog.show();
+
+                        layoutParams.gravity = Gravity.CENTER | Gravity.BOTTOM;
+                        //                    layoutParams.height = (int) (point.y*0.6);
+                        dialog.getWindow().setAttributes(layoutParams);
+                    }
+                });
+            }
+
+            for (int i = add_to_view; i < add_size; i++) {
                 radio_button_others.add(list.get(i));
             }
 
-            rb.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    setCheck(last_check);
-                    Log.e(TAG, "setClick: " + last_check);
-                    RecyclerView recyclerView = initDialog();
-                    dialog = new AlertDialog.Builder(context)
-                            .setView(recyclerView)
-                            .create();
-
-                    WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
-                    dialog.show();
-
-                    layoutParams.gravity = Gravity.CENTER | Gravity.BOTTOM;
-//                    layoutParams.height = (int) (point.y*0.6);
-                    dialog.getWindow().setAttributes(layoutParams);
-                }
-            });
         }
-        setCheck(default_check);
+        button_size += add_size;
+        show_size = Math.min(button_size, max_size);
 
+        if (button_size == add_size) {    // 说明是初始化view，设置当前选中项
+            setCheck(default_check);
+        }
     }
 
 
@@ -223,8 +258,6 @@ public class AlterButtonListView extends RadioGroup {
     }
 
     private RecyclerView initDialog() {
-
-
         RecyclerView recyclerView;
 
         recyclerView = new RecyclerView(context);
@@ -248,12 +281,17 @@ public class AlterButtonListView extends RadioGroup {
 //        if (id != -1)
 //            check(id);
 //        else {
-            if (index > show_size) index = show_size;
-            for (int i = 0; i < show_size; i++) {
-                radio_button.get(i).setChecked(false);
-            }
-        Log.e(TAG, "setCheck: rb_len " + radio_button.size() );
-            radio_button.get(index).setChecked(true);
+        if (index >= button_size) {
+            index = 0;
+            Log.d(TAG, "setCheck: 设置index过大 调整为0");
+        }
+        last_check = index;
+        if (index == -1 || index > show_size) index = show_size;
+        for (int i = 0; i < show_size; i++) {
+            radio_button.get(i).setChecked(false);
+        }
+        Log.e(TAG, "setCheck: rb_len " + radio_button.size());
+        radio_button.get(index).setChecked(true);
 //        }
     }
 
@@ -292,13 +330,22 @@ public class AlterButtonListView extends RadioGroup {
         return rb;
     }
 
+    /**
+     * 修改按钮上的文字
+     *
+     * @param index 按钮序号，-1为更多按钮
+     * @param text  按钮文字
+     * @return 此自定义view，可链式赋值
+     */
     public AlterButtonListView setButtonText(int index, String text) {
         if (index >= button_size) try {
             throw new Exception("setButtonText: index过大");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        if (index < show_size)
+        if (index == -1) {
+            radio_button.get(show_size).setText(text);  // 更多按钮的提示词
+        } else if (index < show_size)
             radio_button.get(index).setText(text);
         else
             radio_button_others.set(index - show_size, text);
@@ -333,18 +380,20 @@ public class AlterButtonListView extends RadioGroup {
         @NonNull
         @Override
         public AlterButtonListView.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            /* 更多界面的TextView格式
+            * */
             TextView textView = new TextView(context);
             textView.setGravity(Gravity.CENTER);
 //            layoutParams.gravity = Gravity.CENTER;
 //            layoutParams.topMargin = 10;
 //            layoutParams.bottomMargin = 10;
             textView.setLayoutParams(layoutParams);
-            textView.setTextSize(15);
+            textView.setTextSize(text_size);
             textView.setPadding(0, 30, 0, 30);
-//            if (viewType == 1) {
-//                textView.setTextColor(getResources().getColor(R.color.blue, null));
-//                textView.setBackground(getResources().getDrawable(R.color.grey_heavy, null));
-//            }
+            if (viewType == 1) {    // 已选中
+                textView.setTextColor(getResources().getColor(R.color.blue, null));
+                textView.setBackground(getResources().getDrawable(R.color.grey, null));
+            }
 
             return new AlterButtonListView.MyViewHolder(textView, viewType);
 
@@ -363,11 +412,11 @@ public class AlterButtonListView extends RadioGroup {
             });
         }
 
-//        @Override
-//        public int getItemViewType(int position) {
-//            if(position == index_selected - 1) return 1;
-//            else return 0;
-//        }
+        @Override
+        public int getItemViewType(int position) {
+            if(position == last_check - max_size) return 1;
+            else return 0;
+        }
 
         @Override
         public int getItemCount() {

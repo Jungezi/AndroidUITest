@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             app:myBackground="@color/blue"
-            app:myContent="计数器罢了"
+            app:myContent="计数器和按钮列表测试"
             app:myTitle="MVVM" />
 
         <LinearLayout
@@ -75,8 +75,89 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@{String.valueOf(vm2.cnt) ,default=11}"
+            android:text=""
             android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/bt_addButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:onClick="addButton"
+                android:text="加入" />
+
+            <Button
+                android:id="@+id/bt_replaceButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:onClick="replaceButton"
+                android:text="置换" />
+
+            <Button
+                android:id="@+id/bt_clearButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:onClick="clearButton"
+                android:text="清空" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/bt_fontplus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:onClick="fontplus"
+                android:text="字号+1" />
+
+            <Button
+                android:id="@+id/bt_fontminus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:onClick="fontminus"
+                android:text="字号-1" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/bt_maxplus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:onClick="maxplus"
+            android:text="显示+1" />
+        <Button
+            android:id="@+id/bt_maxminus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:onClick="maxminus"
+            android:text="显示-1" />
+
+
+    </LinearLayout>
 
 <!--        <com.www233.uitest.alterButtonList.AlterButtonListView-->
 <!--            android:id="@+id/blv"-->
