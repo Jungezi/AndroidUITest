@@ -373,6 +373,9 @@ public class AlterButtonListView extends RadioGroup {
         other_list_style = a.getResourceId(R.styleable.AlterButtonListView_other_list_style, R.style.other_list_default);
 
         more_hint = a.getString(R.styleable.AlterButtonListView_more_hint);
+
+        a.getAttributeResourceValue(null, "style", 0)
+
         if (more_hint == null) more_hint = getResources().getString(R.string.more_hint_default);
 
         a.recycle();
