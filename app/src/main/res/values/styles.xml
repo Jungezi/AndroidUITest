@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <style name="alter_button_default" parent="Widget.AppCompat.CompoundButton.RadioButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-<!--        <item name="android:background">R.drawable.alter_button_selected</item>-->
-<!--        <item name="android:textColor">R.color.alter_button_selected_color</item>-->
+                <item name="android:background">@drawable/alter_button_selected</item>
+                <item name="android:textColor">@color/alter_button_selected_color</item>
         <item name="android:textSize">13sp</item>
         <item name="android:paddingHorizontal" tools:targetApi="o">30dp</item>
         <item name="android:gravity">center</item>
-<!--        <item name="android:text">R.string.button_item_default</item>-->
-<!--        <item name="android:drawable">null</item>-->
+                <item name="android:text">R.string.button_item_default</item>
+                <item name="android:drawable">null</item>
     </style>
 
     <style name="other_list_default">
@@ -21,12 +22,26 @@
     <style name="alter_button_others_default" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
-<!--        <item name="android:background">R.drawable.alter_button_selected</item>-->
-<!--        <item name="android:textColor">R.color.alter_button_selected_color</item>-->
+        <item name="android:background">@drawable/alter_button_selected</item>
+        <item name="android:textColor">@color/alter_button_selected_color</item>
         <item name="android:textSize">15sp</item>
         <item name="android:paddingVertical" tools:targetApi="o">30dp</item>
         <item name="android:gravity">center</item>
-<!--        <item name="android:text">R.string.button_item_default</item>-->
+        <item name="android:text">@string/button_item_default</item>
 <!--        <item name="android:drawable">null</item>-->
+    </style>
+
+    <style name="flowTextView" parent="Widget.AppCompat.TextView">
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/white_approx</item>
+        <item name="android:layout_marginHorizontal" tools:targetApi="o">3dp</item>
+        <item name="android:layout_marginVertical" tools:targetApi="o">4dp</item>
+        <item name="android:background">@color/grey_heavy</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 </resources>

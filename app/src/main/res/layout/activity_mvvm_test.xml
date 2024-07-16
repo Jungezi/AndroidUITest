@@ -159,15 +159,18 @@
 
     </LinearLayout>
 
-<!--        <com.www233.uitest.alterButtonList.AlterButtonListView-->
-<!--            android:id="@+id/blv"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="@color/white"-->
-<!--            android:padding="50dp"-->
-<!--            app:button_size="3"-->
-<!--            app:default_check="2"-->
-<!--            app:max_size="5" />-->
+        <com.www233.uitest.alterButtonList.AlterButtonListView
+            android:id="@+id/blv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="50dp"
+            app:button_style="@style/alter_button_default"
+            app:button_style_others="@style/alter_button_others_default"
+            app:other_list_style="@style/other_list_default"
+            app:button_size="3"
+            app:default_check="2"
+            app:max_size="5" />
 
 
     </LinearLayout>
