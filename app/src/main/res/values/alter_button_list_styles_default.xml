@@ -13,18 +13,6 @@
         <item name="android:text">@string/button_item_default</item>
     </style>
 
-    <style name="alter_button_custom">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/green_light</item>
-        <item name="android:textColor">@color/alter_button_selected_color</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:paddingHorizontal" tools:targetApi="o">5dp</item>
-        <item name="android:gravity">center</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:text">@string/button_item_default</item>
-    </style>
-
     <style name="other_list_default" >
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -47,5 +35,19 @@
         <item name="android:gravity">center</item>
         <item name="android:text">@string/button_item_default</item>
     </style>
+
+    <declare-styleable name="alter_button_layout">
+        <attr name="android:layout_margin"/>
+        <attr name="android:layout_marginTop"/>
+        <attr name="android:layout_marginBottom"/>
+        <attr name="android:layout_marginStart"/>
+        <attr name="android:layout_marginEnd"/>
+
+        <attr name="android:layout_width"/>
+        <attr name="android:layout_height"/>
+        <attr name="android:layout_weight"/>
+        <attr name="android:layout_gravity"/>
+
+    </declare-styleable>
 
 </resources>
