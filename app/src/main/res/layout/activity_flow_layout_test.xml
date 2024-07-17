@@ -115,6 +115,10 @@
         <TextView
             style="@style/flowTextView"
             android:text="标准五个字" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher"/>
 
     </com.www233.uitest.flowtest.FlowLayout>
 
