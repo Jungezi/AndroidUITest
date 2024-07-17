@@ -1,44 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="MyView">
-        <attr name="myTitle" format="string"/>
-        <attr name="myContent" format="string"/>
-        <attr name="myBackground" format="color"/>
+        <attr name="myTitle" format="string" />
+        <attr name="myContent" format="string" />
+        <attr name="myBackground" format="color" />
         <attr name="mySelect">
-            <enum name="s1" value="1"/>
-            <enum name="s2" value="2"/>
-            <enum name="s3" value="3"/>
+            <enum name="s1" value="1" />
+            <enum name="s2" value="2" />
+            <enum name="s3" value="3" />
         </attr>
     </declare-styleable>
     <declare-styleable name="MyButtonView">
-        <attr name="BVpicture" format="reference"/>
-        <attr name="BVtext" format="string"/>
-        <attr name="BVtextsize" format="dimension"/>
+        <attr name="BVpicture" format="reference" />
+        <attr name="BVtext" format="string" />
+        <attr name="BVtextsize" format="dimension" />
         <attr name="BVlayout">
-            <enum name="text_up" value="1"/>
-            <enum name="text_down" value="2"/>
+            <enum name="text_up" value="1" />
+            <enum name="text_down" value="2" />
         </attr>
     </declare-styleable>
-    
+
     <declare-styleable name="AlterButtonListView">
-        <attr name="button_size" format="integer"/>
-        <attr name="max_size" format="integer"/>
-        <attr name="more_hint" format="string"/>
-        <attr name="default_check" format="integer"/>
-        <attr name="text_size" format="integer"/>
-        <attr name="button_style" format="reference"/>
-        <attr name="button_style_others" format="reference"/>
-        <attr name="other_list_style" format="reference"/>
+        <attr name="max_size" format="integer" />
+        <attr name="more_hint" format="string" />
+        <attr name="default_check" format="integer" />
+        <attr name="button_style" format="reference" />
+        <attr name="button_style_others" format="reference" />
+        <attr name="button_style_others_selected" format="reference" />
+        <attr name="other_list_style" format="reference" />
 
     </declare-styleable>
 
     <declare-styleable name="FlowLayout">
         <attr name="layout_gravity">
-            <enum name="top" value="0"/>
-            <enum name="center" value="1"/>
-            <enum name="bottom" value="2"/>
+            <enum name="top" value="0" />
+            <enum name="center" value="1" />
+            <enum name="bottom" value="2" />
         </attr>
-        <attr name="max_line" format="integer"/>
+        <attr name="max_line" format="integer" />
 
     </declare-styleable>
 
