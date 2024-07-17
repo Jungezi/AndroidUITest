@@ -174,50 +174,29 @@ public class FlowLayout extends ViewGroup {
     }
 
 
-    private void createItem(String text) {
-        createItem(text, text_size_default);   // 默认字体大小
-    }
+    private void createItem(View view) {
 
-    private void createItem(String text, int text_size) {
-        TextView tv = new TextView(this.getContext());
-        tv.setText(text);
-
-        tv.setPadding(dp2px(5), dp2px(2), dp2px(5), dp2px(2));
-        tv.setTextSize(text_size);
-        tv.setBackground(getResources().getDrawable(R.color.grey_heavy, getContext().getTheme()));
-        tv.setTextColor(getResources().getColor(R.color.white_approx, getContext().getTheme()));
-
+        view.setPadding(dp2px(5), dp2px(2), dp2px(5), dp2px(2));
         MarginLayoutParams lp = new MarginLayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         lp.setMargins(dp2px(3), dp2px(4), dp2px(3), dp2px(4));
-        tv.setLayoutParams(lp);
+        view.setLayoutParams(lp);
 
-        addView(tv);
+        addView(view);
     }
 
-    public void addItem(String text) {
+    public void addItem(View view) {
 
-        createItem(text);
-        requestLayout();
-    }
-    public void addItem(String text, int size) {
-
-        createItem(text, size);
+        createItem(view);
         requestLayout();
     }
 
-    public void addItemList(List<String> list) {
+    public void addItemList(List<View> list) {
 
-        for (String text : list)
-            createItem(text);
+        for (View v : list)
+            createItem(v);
         requestLayout();
     }
 
-    public void addItemList(List<String> list, List<Integer> text_size) {
-
-        for (int i = 0, len = list.size();i<len;i++)
-            createItem(list.get(i),text_size.get(i));
-        requestLayout();
-    }
 
     public void removeAllItems() {
         removeAllViews();

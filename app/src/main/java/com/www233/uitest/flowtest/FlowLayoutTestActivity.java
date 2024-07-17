@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -37,14 +38,27 @@ public class FlowLayoutTestActivity extends AppCompatActivity {
 
     char alpha = 'A';
     int size = 10;
+
     public void addToView(View view) {
 
-        fl.addItem("友人" + alpha, size);
+        TextView tv = createTextView(size, "友人" + alpha);
+        fl.addItem(tv);
         alpha ++;
         size ++;
         if(alpha>'Z')alpha = 'A';
         if(size > 25) size = 10;
     }
+
+    @NonNull
+    private TextView createTextView(int size, String text) {
+        TextView tv = new TextView(FlowLayoutTestActivity.this);
+        tv.setTextSize(size);
+        tv.setText(text);
+        tv.setBackground(getResources().getDrawable(R.color.grey_heavy, getTheme()));
+        tv.setTextColor(getResources().getColor(R.color.white_approx, getTheme()));
+        return tv;
+    }
+
     public void removeFromView(View view) {
         fl.removeAllItems();
     }
@@ -52,17 +66,13 @@ public class FlowLayoutTestActivity extends AppCompatActivity {
     public void addToViewAll(View view) {
         List<String> list = new ArrayList<>();
         List<Integer> list2 = new ArrayList<>();
-        list.add("烂橘子");
-        list.add("黎明");
-        list.add("在白纸上写了答案的费尔马定理");
-        list.add("BlingBlingBling");
-        list.add("环球旅行1天");
-        list2.add(25);
-        list2.add(18);
-        list2.add(14);
-        list2.add(22);
-        list2.add(10);
-        fl.addItemList(list, list2);
+        List<View> tv = new ArrayList<>();
+        tv.add(createTextView(25,"烂橘子"));
+        tv.add(createTextView(18,"黎明"));
+        tv.add(createTextView(14,"在白纸上写了答案的费尔马定理"));
+        tv.add(createTextView(22,"BlingBlingBling"));
+        tv.add(createTextView(10,"环球旅行1天"));
+        fl.addItemList(tv);
     }
 
     int gravity = 0;
