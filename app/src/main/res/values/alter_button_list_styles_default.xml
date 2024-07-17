@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="alter_button_default">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/alter_button_selected</item>
+        <item name="android:textColor">@color/alter_button_selected_color</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:paddingHorizontal" tools:targetApi="o">7dp</item>
+        <item name="android:paddingVertical" tools:targetApi="o">5dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:text">@string/button_item_default</item>
+    </style>
+
+    <style name="alter_button_custom">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/green_light</item>
+        <item name="android:textColor">@color/alter_button_selected_color</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:paddingHorizontal" tools:targetApi="o">5dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:text">@string/button_item_default</item>
+    </style>
+
+    <style name="other_list_default" >
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="alter_button_others_default">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:paddingVertical" tools:targetApi="o">7dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:text">@string/button_item_default</item>
+    </style>
+
+    <style name="alter_button_others_selected_default">
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:background">@color/grey</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:paddingVertical" tools:targetApi="o">7dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:text">@string/button_item_default</item>
+    </style>
+
+</resources>

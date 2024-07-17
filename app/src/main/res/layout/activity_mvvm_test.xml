@@ -38,25 +38,19 @@
 
             <Button
                 android:id="@+id/bt_cnt_up"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                style="@style/button_linear_horizontal"
                 android:onClick="@{()->listener.plusone()}"
                 android:text="计数" />
 
             <Button
                 android:id="@+id/bt_cnt_down"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                style="@style/button_linear_horizontal"
                 android:onClick="@{()->listener.minusone()}"
                 android:text="减少" />
 
             <Button
                 android:id="@+id/bt_cnt_clear"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                style="@style/button_linear_horizontal"
                 android:onClick="@{()->listener.clear()}"
                 android:text="重置" />
 
@@ -116,31 +110,6 @@
             android:layout_gravity="center"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/bt_fontplus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:onClick="fontplus"
-                android:text="字号+1" />
-
-            <Button
-                android:id="@+id/bt_fontminus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:onClick="fontminus"
-                android:text="字号-1" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
-
         <Button
             android:id="@+id/bt_maxplus"
             android:layout_width="wrap_content"
@@ -156,21 +125,24 @@
             android:onClick="maxminus"
             android:text="显示-1" />
 
+        <Button
+            android:id="@+id/bt_stylechange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:onClick="stylechange"
+            android:text="更改样式" />
 
     </LinearLayout>
 
         <com.www233.uitest.alterButtonList.AlterButtonListView
-            android:id="@+id/blv"
+            android:id="@+id/blv2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@color/red_light"
             android:padding="50dp"
-            app:button_style="@style/alter_button_default"
-            app:button_style_others="@style/alter_button_others_default"
-            app:other_list_style="@style/other_list_default"
-            app:button_size="3"
             app:default_check="2"
-            app:max_size="5" />
+            app:max_size="4" />
 
 
     </LinearLayout>
