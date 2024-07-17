@@ -57,6 +57,18 @@ public class MvvmTestActivity extends AppCompatActivity {
 
     }
 
+    private void initButton() {
+        AlterButtonListView blv = findViewById(R.id.blv2);
+
+        List<String> list = new ArrayList<>();
+        for(int i = 0;i < 7; i++)
+        {
+            list.add("绿色" + i);
+//            list.add("按钮" );
+        }
+        blv.push(list);
+    }
+
 
     private void initButtonList() {
         linearLayout = findViewById(R.id.main);
@@ -66,8 +78,9 @@ public class MvvmTestActivity extends AppCompatActivity {
             list.add("按钮" + button_cnt);
 //            list.add("按钮" );
         }
-        alterButtonListView = new AlterButtonListView(this, 4, list);
-        linearLayout.addView(alterButtonListView);
+//        alterButtonListView = new AlterButtonListView(this, 4);
+//        linearLayout.addView(alterButtonListView);
+        alterButtonListView = findViewById(R.id.blv2);
         alterButtonListView.setCheck(2);
         alterButtonListView.setOnSelectedButtonChangedListener(new AlterButtonListView.OnSelectedButtonChangedListener() {
             @Override
@@ -125,20 +138,23 @@ public class MvvmTestActivity extends AppCompatActivity {
         alterButtonListView.clear();
     }
 
-    public void fontplus(View view) {
-        alterButtonListView.setText_size(alterButtonListView.getText_size() + 1);
-    }
-
-    public void fontminus(View view) {
-        alterButtonListView.setText_size(alterButtonListView.getText_size() - 1);
-    }
-
     public void maxplus(View view) {
-        alterButtonListView.setMax_size(alterButtonListView.getMax_size() + 1);
+        alterButtonListView.setMax_size(alterButtonListView.getMax_size() + 1).refresh();
     }
 
     public void maxminus(View view) {
-        alterButtonListView.setMax_size(alterButtonListView.getMax_size() - 1);
+        alterButtonListView.setMax_size(alterButtonListView.getMax_size() - 1).refresh();
+    }
+
+    boolean style_default = false;
+    public void stylechange(View view) {
+        if (style_default){
+            alterButtonListView.setButton_style(R.style.alter_button_default).refresh();
+        }
+        else {
+            alterButtonListView.setButton_style(R.style.alter_button_custom).refresh();
+        }
+        style_default = !style_default;
     }
 
 
