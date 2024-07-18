@@ -35,6 +35,9 @@ import java.util.List;
 
 public class AlterButtonListView extends RadioGroup {
     private static final String TAG = "AlterButtonListView";
+    private static final int BUTTON_STYLE_DEFAULT = R.style.alter_button_default;
+    private static final int BUTTON_STYLE_OTHERS_DEFAULT = R.style.alter_button_others_default;
+    private static final int BUTTON_STYLE_OTHERS_SELECTED_DEFAULT = R.style.alter_button_others_selected_default;
     final Resources.Theme theme = getContext().getTheme();
     private int button_size = 0, max_size, default_check = 0, show_size, last_check = 0;
     private int button_style, button_style_others, button_style_others_selected, other_list_style;
@@ -158,9 +161,9 @@ public class AlterButtonListView extends RadioGroup {
         this.setBackground(getResources().getDrawable(R.color.white, context.getTheme()));
         this.setPadding(0, 50, 0, 50);
 
-        button_style_default_params = getParams(R.style.alter_button_default);
-        button_style_others_default_params = getParams(R.style.alter_button_others_default);
-        button_style_others_selected_default_params = getParams(R.style.alter_button_others_selected_default);
+        button_style_default_params = getParams(BUTTON_STYLE_DEFAULT);
+        button_style_others_default_params = getParams(BUTTON_STYLE_OTHERS_DEFAULT);
+        button_style_others_selected_default_params = getParams(BUTTON_STYLE_OTHERS_SELECTED_DEFAULT);
 
         clear();
 
@@ -407,7 +410,9 @@ public class AlterButtonListView extends RadioGroup {
     @NonNull
     private RadioButton getRadioButton(@Nullable String text) {
 
-        RadioButton rb = new RadioButton(context, null, 0, button_style);
+        // 默认样式: BUTTON_STYLE_DEFAULT  自定义样式：button_style
+        RadioButton rb = new RadioButton(new ContextThemeWrapper(context, BUTTON_STYLE_DEFAULT), null,0, button_style);
+
 
         /**
          * TODO:ContextThemeWrapper() 作用了解
@@ -500,9 +505,9 @@ public class AlterButtonListView extends RadioGroup {
 
         max_size = a.getInt(R.styleable.AlterButtonListView_max_size, 0);
         default_check = a.getInt(R.styleable.AlterButtonListView_default_check, 0); // 从0开始给按钮编号
-        button_style = a.getResourceId(R.styleable.AlterButtonListView_button_style, R.style.alter_button_default);
-        button_style_others = a.getResourceId(R.styleable.AlterButtonListView_button_style_others, R.style.alter_button_others_default);
-        button_style_others_selected = a.getResourceId(R.styleable.AlterButtonListView_button_style_others_selected, R.style.alter_button_others_selected_default);
+        button_style = a.getResourceId(R.styleable.AlterButtonListView_button_style, BUTTON_STYLE_DEFAULT);
+        button_style_others = a.getResourceId(R.styleable.AlterButtonListView_button_style_others, BUTTON_STYLE_OTHERS_DEFAULT);
+        button_style_others_selected = a.getResourceId(R.styleable.AlterButtonListView_button_style_others_selected, BUTTON_STYLE_OTHERS_SELECTED_DEFAULT);
         other_list_style = a.getResourceId(R.styleable.AlterButtonListView_other_list_style, R.style.other_list_default);
 
         more_hint = a.getString(R.styleable.AlterButtonListView_more_hint);
@@ -522,12 +527,12 @@ public class AlterButtonListView extends RadioGroup {
             TextView textView;
             LayoutParams lp = getParams(button_style_others, button_style_others_default_params);
             if (viewType == 1) {    // 已选中选项的颜色变化
-                textView = new TextView(context, null, 0, button_style_others_selected);
+                textView = new TextView(new ContextThemeWrapper(context, BUTTON_STYLE_OTHERS_SELECTED_DEFAULT), null, 0, button_style_others_selected);
                 lp = getParams(button_style_others, button_style_others_selected_default_params);
                 lp = getParams(button_style_others_selected, lp);
 
             } else {
-                textView = new TextView(context, null, 0, button_style_others);
+                textView = new TextView(new ContextThemeWrapper(context, BUTTON_STYLE_OTHERS_DEFAULT), null, 0, button_style_others);
             }
             textView.setLayoutParams(lp);
 

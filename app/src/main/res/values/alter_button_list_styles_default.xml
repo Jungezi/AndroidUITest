@@ -9,7 +9,6 @@
         <item name="android:textSize">13sp</item>
         <item name="android:paddingHorizontal" tools:targetApi="o">7dp</item>
         <item name="android:paddingVertical" tools:targetApi="o">5dp</item>
-        <item name="android:gravity">center</item>
         <item name="android:text">@string/button_item_default</item>
     </style>
 
