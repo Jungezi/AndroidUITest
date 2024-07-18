@@ -14,6 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.www233.uitest.charttest.PracticeChartActivity;
 import com.www233.uitest.flowtest.FlowLayoutTestActivity;
 import com.www233.uitest.httptest.PracticeInternetActivity;
+import com.www233.uitest.multithreadtest.MultiThreadTestActivity;
 import com.www233.uitest.mvvmtest.MvvmTestActivity;
 import com.www233.uitest.viewtest.MyViewActivity;
 
@@ -65,5 +66,11 @@ public class MainActivity extends AppCompatActivity {
     public void toFlowLayout(View view) {
         Intent intent = new Intent(this, FlowLayoutTestActivity.class);
         startActivity(intent);
+    }
+
+    public void toMulti(View view) {
+        Intent intent = new Intent(this, MultiThreadTestActivity.class);
+        startActivity(intent);
+
     }
 }

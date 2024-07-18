@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".multithreadtest.MultiThreadTestActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="startTask"
+            android:text="执行任务" />
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="startTaskBar"
+            android:text="进度条任务" />
+
+    </LinearLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        tools:layout_editor_absoluteX="131dp"
+        android:max="10000"
+        tools:layout_editor_absoluteY="153dp" />
+
+    <TextView
+        android:id="@+id/tv_show"
+        style="@style/alter_button_others_default"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp" />
+    <TextView
+        android:id="@+id/tv_show2"
+        style="@style/alter_button_others_default"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp" />
+
+</LinearLayout>
