@@ -187,7 +187,10 @@ public class AlterButtonListView extends RadioGroup {
             Log.i(TAG, "onMeasure: child width  " + child.getMeasuredWidth());
         }
         width_res = width - width_occupy;
-        space_each = (width_res / (cnt + 1)) >> 1;
+        if(cnt > 1)
+            space_each = (width_res / (cnt -1)) >> 1;
+        else
+            space_each = width_res >> 1;
         child_lm.clear();
         child_rm.clear();
         for (int i = 0; i < cnt; i++) {
@@ -195,11 +198,12 @@ public class AlterButtonListView extends RadioGroup {
             LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) child.getLayoutParams();
             child_lm.add(lp.leftMargin);
             child_rm.add(lp.rightMargin);
-            lp.leftMargin += space_each;
-            lp.rightMargin += space_each;
-            if (i == 0) lp.leftMargin += space_each;
-            if (i == cnt - 1) lp.rightMargin += space_each;
+            if (i != 0 || cnt == 1)
+                lp.leftMargin += space_each;
+            if (i != cnt - 1 || cnt == 1)
+                lp.rightMargin += space_each;
         }
+
 
         super.onLayout(changed, l, t, r, b);
 
