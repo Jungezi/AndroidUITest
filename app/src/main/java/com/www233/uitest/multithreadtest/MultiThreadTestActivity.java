@@ -1,17 +1,29 @@
 package com.www233.uitest.multithreadtest;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -46,22 +58,23 @@ public class MultiThreadTestActivity extends AppCompatActivity {
 
         initWidget();
         initHandler();
+        initNotify();
     }
 
     List<Integer> cal_result = new ArrayList<>();
     int cnt = 0, ans = 0, done_num = 0;
 
-    void handle2(int index, int process){
+    void handle2(int index, int process) {
         cnt = cnt - cal_result.get(index) + process;
         cal_result.set(index, process);
         pb.setProgress(cnt, false);
         tv.setText(String.format("%.2f%% -> process = %d(%d)", cnt / 100., process, index));
     }
 
-    void handle3(int obj){
+    void handle3(int obj) {
         ans += obj;
-        done_num ++;
-        if(done_num == 5) {
+        done_num++;
+        if (done_num == 5) {
             tv.setText(String.format("[done]100%%:%d", ans));
             Log.d(TAG, "handle3: done");
         }
@@ -92,8 +105,8 @@ public class MultiThreadTestActivity extends AppCompatActivity {
                         break;
                     case 3: // 结束进度条计算
                         ans += (int) obj;
-                        done_num ++;
-                        if(done_num == 5)tv.setText(String.format("[done]100%%:%d", ans));
+                        done_num++;
+                        if (done_num == 5) tv.setText(String.format("[done]100%%:%d", ans));
                         break;
                 }
 
@@ -108,7 +121,27 @@ public class MultiThreadTestActivity extends AppCompatActivity {
         pb = findViewById(R.id.progressBar);
 
     }
+    Notification notification;
+    NotificationManager notificationManager;
+    private void initNotify(){
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            NotificationChannel notifChannel = new NotificationChannel("nof", "nof", NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(notifChannel);
 
+
+        }
+    }
+
+    public void sendNotif(View view) {
+        notification = new NotificationCompat.Builder(this, "nof")
+                .setContentTitle("标题")
+                .setContentText("内容")
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .build();
+        notificationManager.notify(1, notification);
+    }
     public void startTask(View view) {
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(3, 4, 1, TimeUnit.SECONDS,
                 new ArrayBlockingQueue<>(2),
@@ -142,6 +175,58 @@ public class MultiThreadTestActivity extends AppCompatActivity {
 
     }
 
+
+    public void serviceAct(View view) {
+        if (service_state) {
+            Intent serve = new Intent(this, MyFirstService.class);
+            startService(serve);
+        } else {
+            Intent serve = new Intent(this, MyFirstService.class);
+            stopService(serve);
+
+        }
+        service_state = !service_state;
+    }
+
+    boolean service_state = false;
+    int service_num;
+
+
+    class MyServiceConnection implements ServiceConnection{
+        public MyServiceConnection(int type) {
+            this.type = type;
+        }
+
+        int type;
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mb = (MyFirstService.MyBind)service;
+            if(type == 1)   // 开始
+                mb.startRun();
+            else
+                service_num = mb.getState();
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    }
+
+    MyFirstService.MyBind mb;
+    public void taskRequest(View view) {
+
+        Intent serve = new Intent(this, MyFirstService.class);
+        bindService(serve, new MyServiceConnection(2), Context.BIND_AUTO_CREATE);
+        Toast.makeText(this, "num: " + service_num, Toast.LENGTH_SHORT).show();
+    }
+
+    public void taskRun(View view) {
+        Intent serve = new Intent(this, MyFirstService.class);
+        bindService(serve, new MyServiceConnection(1), Context.BIND_AUTO_CREATE);
+    }
+
     static class CalVal {
         public CalVal(int num, int process) {
             this.num = num;
@@ -168,7 +253,6 @@ public class MultiThreadTestActivity extends AppCompatActivity {
         }
 
 
-
         @Override
         public void run() {
             int ans = 0;
@@ -179,8 +263,7 @@ public class MultiThreadTestActivity extends AppCompatActivity {
             for (int i = st; i < ed; i++) {
                 ans += i;
 
-                if((i+1)%5 == 0)
-                {
+                if ((i + 1) % 5 == 0) {
                     try {
                         Thread.sleep(30);
                     } catch (InterruptedException e) {
