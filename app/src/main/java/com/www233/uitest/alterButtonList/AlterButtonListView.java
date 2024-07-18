@@ -190,8 +190,8 @@ public class AlterButtonListView extends RadioGroup {
             Log.i(TAG, "onMeasure: child width  " + child.getMeasuredWidth());
         }
         width_res = width - width_occupy;
-        if(cnt > 1)
-            space_each = (width_res / (cnt -1)) >> 1;
+        if (cnt > 1)
+            space_each = (width_res / (cnt - 1)) >> 1;
         else
             space_each = width_res >> 1;
         child_lm.clear();
@@ -411,7 +411,7 @@ public class AlterButtonListView extends RadioGroup {
     private RadioButton getRadioButton(@Nullable String text) {
 
         // 默认样式: BUTTON_STYLE_DEFAULT  自定义样式：button_style
-        RadioButton rb = new RadioButton(new ContextThemeWrapper(context, BUTTON_STYLE_DEFAULT), null,0, button_style);
+        RadioButton rb = new RadioButton(new ContextThemeWrapper(context, BUTTON_STYLE_DEFAULT), null, 0, button_style);
 
 
         /**
@@ -457,19 +457,19 @@ public class AlterButtonListView extends RadioGroup {
         TypedArray a;
 
         a = theme.obtainStyledAttributes(null, R.styleable.alter_button_layout, 0, style);
-        int mt  = (int) a.getDimension(R.styleable.alter_button_layout_android_layout_marginTop, 0);
-        int mb  = (int) a.getDimension(R.styleable.alter_button_layout_android_layout_marginBottom, 0);
-        int ml  = (int) a.getDimension(R.styleable.alter_button_layout_android_layout_marginStart, 0);
-        int mr  = (int) a.getDimension(R.styleable.alter_button_layout_android_layout_marginEnd, 0);
+        int mt = (int) a.getDimension(R.styleable.alter_button_layout_android_layout_marginTop, 0);
+        int mb = (int) a.getDimension(R.styleable.alter_button_layout_android_layout_marginBottom, 0);
+        int ml = (int) a.getDimension(R.styleable.alter_button_layout_android_layout_marginStart, 0);
+        int mr = (int) a.getDimension(R.styleable.alter_button_layout_android_layout_marginEnd, 0);
         a.recycle();
 
-        if(mt != 0)
+        if (mt != 0)
             lp.topMargin = mt;
-        if(mb != 0)
+        if (mb != 0)
             lp.bottomMargin = mb;
-        if(ml != 0)
+        if (ml != 0)
             lp.leftMargin = ml;
-        if(mr != 0)
+        if (mr != 0)
             lp.rightMargin = mr;
 
         return lp;
