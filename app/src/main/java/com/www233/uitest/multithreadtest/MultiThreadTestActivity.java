@@ -1,5 +1,6 @@
 package com.www233.uitest.multithreadtest;
 
+import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -11,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
@@ -22,12 +24,14 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.www233.uitest.R;
 
 import java.util.ArrayList;
@@ -42,6 +46,8 @@ public class MultiThreadTestActivity extends AppCompatActivity {
 
     TextView tv;
     TextView tv2;
+    TextInputEditText te_st;
+    TextInputEditText te_ed;
     ProgressBar pb;
     Handler handler;
 
@@ -61,26 +67,6 @@ public class MultiThreadTestActivity extends AppCompatActivity {
         initNotify();
     }
 
-    List<Integer> cal_result = new ArrayList<>();
-    int cnt = 0, ans = 0, done_num = 0;
-
-    void handle2(int index, int process) {
-        cnt = cnt - cal_result.get(index) + process;
-        cal_result.set(index, process);
-        pb.setProgress(cnt, false);
-        tv.setText(String.format("%.2f%% -> process = %d(%d)", cnt / 100., process, index));
-    }
-
-    void handle3(int obj) {
-        ans += obj;
-        done_num++;
-        if (done_num == 5) {
-            tv.setText(String.format("[done]100%%:%d", ans));
-            Log.d(TAG, "handle3: done");
-        }
-    }
-
-
     private void initHandler() {
         handler = new Handler(Looper.getMainLooper()) {
             @Override
@@ -95,19 +81,6 @@ public class MultiThreadTestActivity extends AppCompatActivity {
                             tv2.setText(String.format("%s %s", text, obj));
                         }
                         break;
-                    case 2: // 进度条
-                        int index = ((CalVal) obj).num;
-                        int process = ((CalVal) obj).process;
-                        cnt = cnt - cal_result.get(index) + process;
-                        cal_result.set(index, process);
-                        pb.setProgress(process, true);
-                        tv.setText(String.format("%d%% %d", process / 10000, process));
-                        break;
-                    case 3: // 结束进度条计算
-                        ans += (int) obj;
-                        done_num++;
-                        if (done_num == 5) tv.setText(String.format("[done]100%%:%d", ans));
-                        break;
                 }
 
             }
@@ -119,18 +92,19 @@ public class MultiThreadTestActivity extends AppCompatActivity {
         tv = findViewById(R.id.tv_show);
         tv2 = findViewById(R.id.tv_show2);
         pb = findViewById(R.id.progressBar);
+        te_st = findViewById(R.id.te_st);
+        te_ed = findViewById(R.id.te_ed);
 
     }
+
     Notification notification;
     NotificationManager notificationManager;
-    private void initNotify(){
+
+    private void initNotify() {
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-        {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notifChannel = new NotificationChannel("nof", "nof", NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(notifChannel);
-
-
         }
     }
 
@@ -142,6 +116,7 @@ public class MultiThreadTestActivity extends AppCompatActivity {
                 .build();
         notificationManager.notify(1, notification);
     }
+
     public void startTask(View view) {
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(3, 4, 1, TimeUnit.SECONDS,
                 new ArrayBlockingQueue<>(2),
@@ -160,18 +135,18 @@ public class MultiThreadTestActivity extends AppCompatActivity {
     }
 
     public void startTaskBar(View view) {
-        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(6, 16, 10, TimeUnit.SECONDS,
-                new ArrayBlockingQueue<>(16),
-                new ThreadPoolExecutor.AbortPolicy()
-        );
-        List<CalRunnable> list = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            list.add(new CalRunnable(i * 2000, (i + 1) * 2000, i));
-            cal_result.add(0);
-        }
-        for (int i = 0; i < 5; i++) {
-            threadPoolExecutor.execute(list.get(i));
-        }
+        int MAX = Integer.parseInt(te_ed.getText().toString());
+        int MIN = Integer.parseInt(te_st.getText().toString());
+        int len = MAX - MIN + 1;
+        List<Integer> list = new ArrayList<>();
+        for (int i = MIN; i <= MAX; i++) list.add(i);
+        pb.setMax(len);
+        new MultiThreadCalTask(list, 10, handler,
+                num -> {
+                    pb.setProgress(num, false);
+                    tv.setText(String.format("%.2f%% %d/%d", (float) num / MAX * 100, num, len));
+                }, ans -> tv.setText(String.format("[done]100%%:ans=%d", ans))
+        ).start();
 
     }
 
@@ -192,19 +167,13 @@ public class MultiThreadTestActivity extends AppCompatActivity {
     int service_num;
 
 
-    class MyServiceConnection implements ServiceConnection{
-        public MyServiceConnection(int type) {
-            this.type = type;
-        }
-
-        int type;
+    class MyServiceConnection implements ServiceConnection {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            mb = (MyFirstService.MyBind)service;
-            if(type == 1)   // 开始
-                mb.startRun();
-            else
-                service_num = mb.getState();
+            mb = (MyFirstService.MyBind) service;
+            int MAX = Integer.parseInt(te_ed.getText().toString());
+            int MIN = Integer.parseInt(te_st.getText().toString());
+            mb.startRun(MIN, MAX);
 
         }
 
@@ -215,86 +184,15 @@ public class MultiThreadTestActivity extends AppCompatActivity {
     }
 
     MyFirstService.MyBind mb;
+
     public void taskRequest(View view) {
 
-        Intent serve = new Intent(this, MyFirstService.class);
-        bindService(serve, new MyServiceConnection(2), Context.BIND_AUTO_CREATE);
-        Toast.makeText(this, "num: " + service_num, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "num: " + mb.getState(), Toast.LENGTH_SHORT).show();
     }
 
     public void taskRun(View view) {
         Intent serve = new Intent(this, MyFirstService.class);
-        bindService(serve, new MyServiceConnection(1), Context.BIND_AUTO_CREATE);
-    }
-
-    static class CalVal {
-        public CalVal(int num, int process) {
-            this.num = num;
-            this.process = process;
-        }
-
-        int num;
-
-        public void setProcess(int process) {
-            this.process = process;
-        }
-
-        int process;
-    }
-
-    class CalRunnable implements Runnable {
-        int st, ed;
-        int num;
-
-        public CalRunnable(int st, int ed, int num) {
-            this.st = st;
-            this.ed = ed;
-            this.num = num;
-        }
-
-
-        @Override
-        public void run() {
-            int ans = 0;
-            Log.i(TAG, num + ")run");
-            Message msg = new Message();
-            msg.what = 2;
-            CalVal cv = new CalVal(num, 0);
-            for (int i = st; i < ed; i++) {
-                ans += i;
-
-                if ((i + 1) % 5 == 0) {
-                    try {
-                        Thread.sleep(30);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    cv.setProcess(i);
-                    msg.obj = cv;
-//                    handler.sendMessage(msg);
-                    int finalI = i;
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            handle2(num, finalI - st);
-                        }
-                    });
-                }
-
-
-            }
-            msg.what = 3;
-            msg.obj = ans;
-//            handler.sendMessage(msg);
-            int finalAns = ans;
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    handle3(finalAns);
-                }
-            });
-            Log.i(TAG, num + ")done");
-        }
+        bindService(serve, new MyServiceConnection(), Context.BIND_AUTO_CREATE);
     }
 
 
@@ -328,6 +226,35 @@ public class MultiThreadTestActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void initThread() {
+        MyHandlerThread handlerThread = new MyHandlerThread("ThreadName");
+        handlerThread.start();
+        Handler handler = new Handler(handlerThread.getLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+            }
+        };
+    }
+
+    class MyHandlerThread extends HandlerThread{
+
+        public MyHandlerThread(String name) {
+            super(name);
+        }
+
+        public MyHandlerThread(String name, int priority) {
+            super(name, priority);
+        }
+
+        @Override
+        protected void onLooperPrepared() {
+            super.onLooperPrepared();
+        }
+
+
     }
 
 }
