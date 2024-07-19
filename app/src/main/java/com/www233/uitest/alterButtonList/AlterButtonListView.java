@@ -413,11 +413,6 @@ public class AlterButtonListView extends RadioGroup {
         // 默认样式: BUTTON_STYLE_DEFAULT  自定义样式：button_style
         RadioButton rb = new RadioButton(new ContextThemeWrapper(context, BUTTON_STYLE_DEFAULT), null, 0, button_style);
 
-
-        /**
-         * TODO:ContextThemeWrapper() 作用了解
-         */
-
         LayoutParams lp = getParams(button_style, button_style_default_params);
         rb.setLayoutParams(lp);
         addView(rb);
