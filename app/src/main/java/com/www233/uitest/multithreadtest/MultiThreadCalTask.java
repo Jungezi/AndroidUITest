@@ -6,7 +6,9 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -32,7 +34,7 @@ public class MultiThreadCalTask {
     public void start() {
         st = 0;
         ed = cal_list.size() - 1;
-        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(Math.min(thread, 8),
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(thread,
                 thread, 600, TimeUnit.SECONDS,
                 new ArrayBlockingQueue<>(thread),
                 new ThreadPoolExecutor.AbortPolicy()
@@ -41,14 +43,32 @@ public class MultiThreadCalTask {
         int interval = (ed - st + 1) / thread;
         int index_st = st;
         CountDownLatch countDownLatch = new CountDownLatch(thread);
+        CyclicBarrier cb = new CyclicBarrier(thread, new Runnable() {
+            @Override
+            public void run() {
+                int all_result = 0;
+                for (int j = 0; j < thread; j++) {
+                    all_result += cal_result.get(j);
+                }
+                int finalAll_result = all_result;
+                Log.e(TAG, "run: + callback done prev");
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.e(TAG, Thread.currentThread().getName() + ")run: + callback done");
+                        task_result.callback(finalAll_result);
+                    }
+                });
+            }
+        });
         for (int i = 0; i < thread - 1; i++) {
-            list.add(new CalRunnable(index_st, index_st + interval, i, countDownLatch));
+            list.add(new CalRunnable(index_st, index_st + interval, i, cb));
             Log.d(TAG, String.format("%d:%d->%d", i, index_st, index_st + interval));
             cal_result.add(0);
             cal_progress.add(0);
             index_st += interval;
         }
-        list.add(new CalRunnable(index_st, ed + 1, thread - 1, countDownLatch));
+        list.add(new CalRunnable(index_st, ed + 1, thread - 1, cb));
         Log.d(TAG, String.format("%d:%d->%d", thread - 1, index_st, ed + 1));
         cal_result.add(0);
         cal_progress.add(0);
@@ -65,12 +85,19 @@ public class MultiThreadCalTask {
         int st, ed;
         int index;
         CountDownLatch countDownLatch;
+        CyclicBarrier cb;
 
         public CalRunnable(int st, int ed, int index, CountDownLatch countDownLatch) {
             this.st = st;
             this.ed = ed;
             this.index = index;
             this.countDownLatch = countDownLatch;
+        }
+        public CalRunnable(int st, int ed, int index, CyclicBarrier cb) {
+            this.st = st;
+            this.ed = ed;
+            this.index = index;
+            this.cb = cb;
         }
 
         @Override
@@ -102,23 +129,15 @@ public class MultiThreadCalTask {
                     });
                 }
             }
-            countDownLatch.countDown();
             cal_result.set(index, ans);
-            Log.d(TAG, index + ")run: done " + ans);
-            if (countDownLatch.getCount() == 0) {
-                int all_result = 0;
-                for (int j = 0; j < thread; j++) {
-                    all_result += cal_result.get(j);
-                }
-                int finalAll_result = all_result;
-                Log.e(TAG, "run: + callback done prev");
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.e(TAG, index + ")run: + callback done");
-                        task_result.callback(finalAll_result);
-                    }
-                });
+            Log.d(TAG, index + ")run: done " + Thread.currentThread().getName());
+            try {
+                cb.await();
+
+            } catch (BrokenBarrierException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
     }
