@@ -86,8 +86,8 @@ public class MultiThreadCalTask {
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
-                    int progress = 0;
                     cal_progress.set(index, i - st + 1);
+                    int progress = 0;
                     for (int j = 0; j < thread; j++) {
                         progress += cal_progress.get(j);
                     }
@@ -102,25 +102,23 @@ public class MultiThreadCalTask {
                     });
                 }
             }
-            synchronized ((Object) thread_finish) {
-                thread_finish += 1;
-                cal_result.set(index, ans);
-                Log.d(TAG, index + ")run: done " + ans);
-                if (thread_finish == thread) {
-                    int all_result = 0;
-                    for (int j = 0; j < thread; j++) {
-                        all_result += cal_result.get(j);
-                    }
-                    int finalAll_result = all_result;
-                    Log.e(TAG, "run: + callback done prev");
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Log.e(TAG, index + ")run: + callback done");
-                            task_result.callback(finalAll_result);
-                        }
-                    });
+            countDownLatch.countDown();
+            cal_result.set(index, ans);
+            Log.d(TAG, index + ")run: done " + ans);
+            if (countDownLatch.getCount() == 0) {
+                int all_result = 0;
+                for (int j = 0; j < thread; j++) {
+                    all_result += cal_result.get(j);
                 }
+                int finalAll_result = all_result;
+                Log.e(TAG, "run: + callback done prev");
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.e(TAG, index + ")run: + callback done");
+                        task_result.callback(finalAll_result);
+                    }
+                });
             }
         }
     }
