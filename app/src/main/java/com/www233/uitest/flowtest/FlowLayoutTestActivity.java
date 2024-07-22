@@ -76,18 +76,6 @@ public class FlowLayoutTestActivity extends AppCompatActivity {
         });
     }
 
-    char alpha = 'A';
-    int size = 10;
-
-    public void addToView(View view) {
-
-        flowLayoutTestViewModel.addData("友人" + alpha, size);
-        alpha++;
-        size++;
-        if (alpha > 'Z') alpha = 'A';
-        if (size > 25) size = 10;
-    }
-
     @NonNull
     private TextView createTextView(int size, String text) {
         TextView tv = new TextView(FlowLayoutTestActivity.this);
@@ -98,18 +86,16 @@ public class FlowLayoutTestActivity extends AppCompatActivity {
         return tv;
     }
 
+    public void addToView(View view) {
+        flowLayoutTestViewModel.addData();
+    }
+
     public void removeAllView(View view) {
         flowLayoutTestViewModel.clear();
     }
 
     public void addToViewAll(View view) {
-        List<TextDataItem> data_list = new ArrayList<>();
-        data_list.add(new TextDataItem("烂橘子", 25));
-        data_list.add(new TextDataItem("黎明", 18));
-        data_list.add(new TextDataItem("在白纸上写了答案的费尔马定理", 14));
-        data_list.add(new TextDataItem("BlingBlingBling", 22));
-        data_list.add(new TextDataItem("环球旅行1天", 10));
-        flowLayoutTestViewModel.addData(data_list);
+        flowLayoutTestViewModel.addDataList();
     }
 
     int gravity = 0;

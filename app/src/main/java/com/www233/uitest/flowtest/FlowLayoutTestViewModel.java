@@ -51,24 +51,42 @@ public class FlowLayoutTestViewModel extends ViewModel {
         this.data_list.postValue(data_list);
     }
 
-    public void addData(String add_data, int add_size)
-    {
+    char alpha = 'A';
+    int size = 10;
+
+    public void addData() {
+
+        alpha++;
+        size++;
+        if (alpha > 'Z') alpha = 'A';
+        if (size > 25) size = 10;
+
+        String add_data = "友人" + alpha;
+        int add_size = size;
+
         List<TextDataItem> data_prev = data_list.getValue();
         TextDataItem textDataItem = new TextDataItem(add_data, add_size);
         data_prev.add(textDataItem);
         flowLayoutTestModel.addData_list(textDataItem);
         setData_list(data_prev);
     }
-    public void addData(List<TextDataItem> add_data)
-    {
+
+    public void addDataList() {
+
+        List<TextDataItem> add_data = new ArrayList<>();
+        add_data.add(new TextDataItem("烂橘子", 25));
+        add_data.add(new TextDataItem("黎明", 18));
+        add_data.add(new TextDataItem("在白纸上写了答案的费尔马定理", 14));
+        add_data.add(new TextDataItem("BlingBlingBling", 22));
+        add_data.add(new TextDataItem("环球旅行1天", 10));
+
         List<TextDataItem> data_prev = data_list.getValue();
         data_prev.addAll(add_data);
         flowLayoutTestModel.addData_list(add_data);
         setData_list(data_prev);
     }
 
-    public void clear()
-    {
+    public void clear() {
         flowLayoutTestModel.delete();
         setData_list(new ArrayList<>());
     }

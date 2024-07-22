@@ -16,6 +16,7 @@ import java.util.List;
 
 public class FlowLayoutTestModel {
     TextDataDao textDataDao;
+
     public FlowLayoutTestModel(Context context) {
 
         textDataDao = TextDatabase.getInstance(context).textDataDao();
@@ -31,14 +32,16 @@ public class FlowLayoutTestModel {
         textDataDao.deleteTextDataItem();
         textDataDao.insertTextDataItems(data_list);
     }
+
     public void addData_list(List<TextDataItem> data_list) {
         textDataDao.insertTextDataItems(data_list);
     }
+
     public void addData_list(TextDataItem data_list) {
         textDataDao.insertTextDataItem(data_list);
     }
 
-    public void delete(){
+    public void delete() {
         textDataDao.deleteTextDataItem();
     }
 }
