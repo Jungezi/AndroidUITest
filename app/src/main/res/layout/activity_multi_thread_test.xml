@@ -51,6 +51,11 @@
             android:layout_height="wrap_content"
             android:onClick="sendNotif"
             android:text="发送通知" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="lockTest"
+            android:text="测试锁" />
 
     </LinearLayout>
 
