@@ -166,6 +166,15 @@ public class MultiThreadTestActivity extends AppCompatActivity {
     boolean service_state = false;
     int service_num;
 
+    public void lockTest(View view) {
+        LockTest lockTest = new LockTest();
+        try {
+            lockTest.LockForTest();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     class MyServiceConnection implements ServiceConnection {
         @Override
