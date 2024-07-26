@@ -33,17 +33,21 @@ public class MyViewActivity extends AppCompatActivity {
         });
 
         initButton();
-        initRecycler();
+
+        LinearLayout.LayoutParams lp_horizontal = new LinearLayout.LayoutParams(1100, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp_horizontal.setMargins(10,0,10,50);
+        LinearLayout.LayoutParams lp_vertical = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 1320);
+        initRecycler(lp_horizontal,15,3, 0);
+        initRecycler(lp_vertical,12,2, 1);
 
     }
 
-    private void initRecycler() {
+    private void initRecycler(LinearLayout.LayoutParams lp,int page_limit, int row, int type) {
         List<View> list = new ArrayList<>();
         TextView tv;
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(20, 30);
+        LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(30, 30);
         lp2.setMargins(5,5,5,5);
-        for(int i = 0;i<33 ;i++)
+        for(int i = 0;i<51 ;i++)
         {
             tv = new TextView(this);
             tv.setText("text");
@@ -51,13 +55,12 @@ public class MyViewActivity extends AppCompatActivity {
             tv.setLayoutParams(lp2);
             list.add(tv);
         }
-        ButtonPageScroll buttonPageScroll = new ButtonPageScroll(this,list);
+        ButtonPageScroll buttonPageScroll = new ButtonPageScroll(this,list,page_limit, row, type);
         buttonPageScroll.setLayoutParams(lp);
         buttonPageScroll.setBackgroundColor(getColor(R.color.green_light));
 
         LinearLayout view = findViewById(R.id.main);
         view.addView(buttonPageScroll);
-
     }
 
     private void initButton() {

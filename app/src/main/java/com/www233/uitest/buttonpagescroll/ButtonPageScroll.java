@@ -31,10 +31,11 @@ import java.util.Objects;
 
 public class ButtonPageScroll extends RecyclerView {
     private static final String TAG = "ButtonPageScroll";
+     int type = 0;
     List<View> view_list;
     int page_limit = 10;
     int state = SCROLL_STATE_IDLE;
-    private static final int ROW = 2;   // 行数
+     int ROW = 2;   // 行数
 
     GridLayoutManager gridLayoutManager;
 
@@ -50,17 +51,12 @@ public class ButtonPageScroll extends RecyclerView {
         super(context, attrs, defStyleAttr);
     }
 
-    public ButtonPageScroll(@NonNull Context context, List<View> view_list) {
-        this(context);
-        this.view_list = view_list;
-        init();
-
-    }
-
-    public ButtonPageScroll(@NonNull Context context, List<View> view_list, int page_limit) {
+    public ButtonPageScroll(@NonNull Context context, List<View> view_list, int page_limit, int row,int type) {
         this(context);
         this.view_list = view_list;
         this.page_limit = page_limit;
+        this.ROW = row;
+        this.type = type;
         init();
 
     }
@@ -68,7 +64,10 @@ public class ButtonPageScroll extends RecyclerView {
     private void init() {
         ButtonPageScrollAdapter myAdapter = new ButtonPageScrollAdapter();
         this.setAdapter(myAdapter);
-        gridLayoutManager = new GridLayoutManager(getContext(), ROW, HORIZONTAL, false);
+        if(type == 0)
+            gridLayoutManager = new GridLayoutManager(getContext(), ROW, HORIZONTAL, false);
+        else if (type == 1)
+            gridLayoutManager = new GridLayoutManager(getContext(), ROW, VERTICAL, false);
 
         this.setLayoutManager(gridLayoutManager);
 
@@ -90,7 +89,7 @@ public class ButtonPageScroll extends RecyclerView {
         @Override
         public void onBindViewHolder(@NonNull ButtonPageScrollViewHolder holder, int position) {
             LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(200, 200);
-            lp2.setMargins(20, 5, 20, 5);
+            lp2.setMargins(10, 10, 10, 10);
             holder.view.setBackgroundColor(getResources().getColor(R.color.blue, getContext().getTheme()));
             holder.view.setLayoutParams(lp2);
             ((TextView) holder.view).setText(String.valueOf(position));
