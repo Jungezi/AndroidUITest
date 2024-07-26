@@ -3,6 +3,7 @@ package com.www233.uitest.buttonpagescroll;
 import static androidx.core.content.res.ResourcesCompat.getColor;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -74,6 +75,24 @@ public class ButtonPageScroll extends RecyclerView {
 
         ButtonPageScrollSnapHelper snapHelper = new ButtonPageScrollSnapHelper();
         snapHelper.attachToRecyclerView(this);
+
+        addItemDecoration(new ButtonPageScrollDecoration());
+    }
+
+    class ButtonPageScrollDecoration extends ItemDecoration {
+        int last_line_st = view_list.size() - ((view_list.size() - 1) % ROW) - 1;
+
+        @Override
+        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull State state) {
+            super.getItemOffsets(outRect, view, parent, state);
+            int position = parent.getChildAdapterPosition(view);
+            if (position >= last_line_st) {
+                int line = (position % page_limit) / ROW + 1;
+                int all_line = page_limit / ROW;
+                outRect.set(0, 0, getWidth() / all_line * (all_line - line), 0);
+            }
+
+        }
     }
 
     class ButtonPageScrollAdapter extends RecyclerView.Adapter<ButtonPageScrollViewHolder> {
@@ -81,11 +100,8 @@ public class ButtonPageScroll extends RecyclerView {
         @NonNull
         @Override
         public ButtonPageScrollViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-
             View view = new TextView(getContext());
             return new ButtonPageScrollViewHolder(view);
-
         }
 
         @Override
@@ -102,8 +118,6 @@ public class ButtonPageScroll extends RecyclerView {
         public int getItemCount() {
             return view_list.size();
         }
-
-
     }
 
     static class ButtonPageScrollViewHolder extends RecyclerView.ViewHolder {
@@ -115,48 +129,63 @@ public class ButtonPageScroll extends RecyclerView {
         }
     }
 
+    private OrientationHelper mHorizontalHelper;
+
+    @NonNull
+    private OrientationHelper getHorizontalHelper(
+            @NonNull RecyclerView.LayoutManager layoutManager) {
+        if (mHorizontalHelper == null || mHorizontalHelper.getLayoutManager() != layoutManager) {
+            mHorizontalHelper = OrientationHelper.createHorizontalHelper(layoutManager);
+        }
+        return mHorizontalHelper;
+    }
 
     class ButtonPageScrollSnapHelper extends SnapHelper {
-
-        private OrientationHelper mHorizontalHelper;
         private int currentPosition = 0;
-
-        private int distanceToCenter(@NonNull View targetView, OrientationHelper helper) {
-            final int childCenter = helper.getDecoratedStart(targetView);
-            final int containerCenter = helper.getStartAfterPadding();
-            Log.d(TAG, String.format("distanceToCenter: %d - %d %d", childCenter, containerCenter, helper.getTotalSpace()));
-            return childCenter - containerCenter;
-        }
 
         @Nullable
         @Override
         public int[] calculateDistanceToFinalSnap(@NonNull LayoutManager layoutManager, @NonNull View targetView) {
             int[] out = new int[2];
 
+
             int position = layoutManager.getPosition(targetView);
             OrientationHelper helper = getHorizontalHelper(layoutManager);
 
+//            Log.e(TAG, String.format("全页|开始%d 中间%d 结尾%d ", helper.getStartAfterPadding(), helper.getTotalSpace(), helper.getEndAfterPadding()));
+//            Log.e(TAG, String.format("全页|Recycler view %d ", getWidth()));
+//            Log.e(TAG, String.format("组件%d|开始%d 中间%d 结尾%d ", layoutManager.getPosition(targetView), helper.getDecoratedStart(targetView), helper.getDecoratedMeasurement(targetView), helper.getDecoratedEnd(targetView)));
+
             int currentPageStart = currentPosition;
-            if (position < currentPosition - ROW)  // 左移
-            {
-                currentPageStart = currentPosition - page_limit;
 
-            } else if (position > currentPosition)    // 右移
-            {
-                currentPageStart = currentPosition + page_limit;
+            Log.e(TAG, String.format("calculateDistanceToFinalSnap: %d %d", position, currentPosition));
+            if (Math.abs(position - currentPosition) >= page_limit) {   // 目标view已加载出来，不用再计算
+                out[0] = helper.getDecoratedStart(targetView) - helper.getStartAfterPadding();
+                currentPageStart = position;
+            } else {    // 移动半块及以上时会滑动页面
+                int dis = Math.abs(helper.getDecoratedStart(targetView) - helper.getStartAfterPadding());
+                if (position < currentPosition - ROW
+                        || dis <= (helper.getDecoratedMeasurement(targetView) / 2) && position < currentPosition) {  // 左移
+                    currentPageStart = currentPosition - page_limit;
+
+                } else if (position >= currentPosition + ROW
+                        || dis >= (helper.getDecoratedMeasurement(targetView) / 2) && position >= currentPosition) {    // 右移
+                    currentPageStart = currentPosition + page_limit;
+                }
+
+                int columnWidth = helper.getDecoratedMeasurement(targetView);
+                int distance = ((position - currentPageStart) / ROW) * columnWidth;
+                final int childStart = helper.getDecoratedStart(targetView);
+
+                out[0] = childStart - distance;
             }
-            int columnWidth = helper.getTotalSpace() / (page_limit / ROW);
-            int distance = ((position - currentPageStart) / ROW) * columnWidth;
-            final int childStart = helper.getDecoratedStart(targetView);
 
-            out[0] = childStart - distance;
             out[1] = 0; // 不竖向移动
             currentPosition = currentPageStart;
+            Log.i(TAG, String.format("calculateDistanceToFinalSnap: 最左%d移动至[%d]%d", position, currentPageStart, out[0]));
 
-            Log.i(TAG, String.format("calculateDistanceToFinalSnap: 移动到[%d]%d", currentPageStart, out[0]));
             return out;
         }
-
 
         @Nullable
         @Override
@@ -169,7 +198,7 @@ public class ButtonPageScroll extends RecyclerView {
 
             View closestChild = null;
             final int center = helper.getStartAfterPadding();
-            int absClosest = Integer.MAX_VALUE;
+            int closest = Integer.MAX_VALUE;
 
             for (int i = 0; i < childCount; i++) {
                 final View child = layoutManager.getChildAt(i);
@@ -177,25 +206,16 @@ public class ButtonPageScroll extends RecyclerView {
 
                 int childCenter = helper.getDecoratedStart(child)
                         + (helper.getDecoratedMeasurement(child));
-                int absDistance = Math.abs(childCenter - center);
+                int distance = Math.abs(childCenter - center);
 
-                if (absDistance < absClosest) {
-                    absClosest = absDistance;
+                if (distance < closest) {
+                    closest = distance;
                     closestChild = child;
                 }
 
             }
             Log.i(TAG, String.format("findSnapView 现在在 %d", currentPosition));
             return closestChild;
-        }
-
-        @NonNull
-        private OrientationHelper getHorizontalHelper(
-                @NonNull RecyclerView.LayoutManager layoutManager) {
-            if (mHorizontalHelper == null || mHorizontalHelper.getLayoutManager() != layoutManager) {
-                mHorizontalHelper = OrientationHelper.createHorizontalHelper(layoutManager);
-            }
-            return mHorizontalHelper;
         }
 
         @Override
@@ -208,14 +228,14 @@ public class ButtonPageScroll extends RecyclerView {
                 if (currentPosition + page_limit > view_list.size())
                     return currentPosition;
                 else
-                    return currentPosition += page_limit;
+                    return currentPosition + page_limit;
 
             } else if (velocityX < 0) // 向左滑动
             {
                 if (currentPosition - page_limit < 0)
                     return currentPosition;
                 else
-                    return currentPosition -= page_limit;
+                    return currentPosition - page_limit;
             }
             return RecyclerView.NO_POSITION;
         }
