@@ -32,11 +32,11 @@ public class ButtonPageScroll extends RecyclerView {
     private static final String TAG = "ButtonPageScroll";
     List<View> view_list;
     int page_limit = 10;
-    int state =  SCROLL_STATE_IDLE;
+    int state = SCROLL_STATE_IDLE;
     private static final int ROW = 2;   // 行数
 
-    private int currentPosition = 0;
     GridLayoutManager gridLayoutManager;
+
     public ButtonPageScroll(@NonNull Context context) {
         this(context, (AttributeSet) null);
     }
@@ -71,15 +71,6 @@ public class ButtonPageScroll extends RecyclerView {
         gridLayoutManager = new GridLayoutManager(getContext(), ROW, HORIZONTAL, false);
 
         this.setLayoutManager(gridLayoutManager);
-
-        addOnScrollListener(new OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                state = newState;
-                Log.e(TAG, "状态改变: " + state );
-            }
-        });
 
         ButtonPageScrollSnapHelper snapHelper = new ButtonPageScrollSnapHelper();
         snapHelper.attachToRecyclerView(this);
@@ -125,14 +116,15 @@ public class ButtonPageScroll extends RecyclerView {
     }
 
 
-
     class ButtonPageScrollSnapHelper extends SnapHelper {
 
         private OrientationHelper mHorizontalHelper;
+        private int currentPosition = 0;
 
         private int distanceToCenter(@NonNull View targetView, OrientationHelper helper) {
             final int childCenter = helper.getDecoratedStart(targetView);
             final int containerCenter = helper.getStartAfterPadding();
+            Log.d(TAG, String.format("distanceToCenter: %d - %d %d", childCenter, containerCenter, helper.getTotalSpace()));
             return childCenter - containerCenter;
         }
 
@@ -141,11 +133,27 @@ public class ButtonPageScroll extends RecyclerView {
         public int[] calculateDistanceToFinalSnap(@NonNull LayoutManager layoutManager, @NonNull View targetView) {
             int[] out = new int[2];
 
-            out[0] = distanceToCenter(targetView,
-                    getHorizontalHelper(layoutManager));
-            out[1] = 0; // 不竖向移动
+            int position = layoutManager.getPosition(targetView);
+            OrientationHelper helper = getHorizontalHelper(layoutManager);
 
-            Log.i(TAG, String.format("calculateDistanceToFinalSnap: 移动为%d", out[0]));
+            int currentPageStart = currentPosition;
+            if (position < currentPosition - ROW)  // 左移
+            {
+                currentPageStart = currentPosition - page_limit;
+
+            } else if (position > currentPosition)    // 右移
+            {
+                currentPageStart = currentPosition + page_limit;
+            }
+            int columnWidth = helper.getTotalSpace() / (page_limit / ROW);
+            int distance = ((position - currentPageStart) / ROW) * columnWidth;
+            final int childStart = helper.getDecoratedStart(targetView);
+
+            out[0] = childStart - distance;
+            out[1] = 0; // 不竖向移动
+            currentPosition = currentPageStart;
+
+            Log.i(TAG, String.format("calculateDistanceToFinalSnap: 移动到[%d]%d", currentPageStart, out[0]));
             return out;
         }
 
@@ -153,53 +161,32 @@ public class ButtonPageScroll extends RecyclerView {
         @Nullable
         @Override
         public View findSnapView(LayoutManager layoutManager) {
-            Log.e(TAG, "findSnapView: 状态" + state );
-            // 因为左滑时会调用startSmoothScroll以显示出上一个view 防止在过程中再次调用该方法移回原来的位置 所以要判断当前是否在滑动中
-            if(state == SCROLL_STATE_SETTLING)return null;
-
             final int childCount = layoutManager.getChildCount();
             OrientationHelper helper = getHorizontalHelper(layoutManager);
-            View nextChild = null;
-            final int left = helper.getStartAfterPadding();
-            int positionCurrent = 0;
-            boolean currentIsValid = false; // 当前的view是否销毁
+            if (childCount == 0) {
+                return null;
+            }
+
+            View closestChild = null;
+            final int center = helper.getStartAfterPadding();
+            int absClosest = Integer.MAX_VALUE;
+
             for (int i = 0; i < childCount; i++) {
                 final View child = layoutManager.getChildAt(i);
-                if (child == null)
-                {
-                    continue;
+                if (child == null) continue;
+
+                int childCenter = helper.getDecoratedStart(child)
+                        + (helper.getDecoratedMeasurement(child));
+                int absDistance = Math.abs(childCenter - center);
+
+                if (absDistance < absClosest) {
+                    absClosest = absDistance;
+                    closestChild = child;
                 }
-                if (layoutManager.getPosition(child) == currentPosition + page_limit)   // 下一个view
-                {
-                    Log.i(TAG, String.format("findSnapView:%d -> %d", layoutManager.getPosition(child), currentPosition));
-                    nextChild = child;
-                }
-                if(layoutManager.getPosition(child) == currentPosition){
-                    positionCurrent =  helper.getDecoratedStart(child) - left;
-                    currentIsValid = true;
-                }
+
             }
-            Log.i(TAG, String.format("findSnapView 现在在 %d",currentPosition));
-                if(positionCurrent > 0)  // 左滑，因为左边的view没有生成，所以要手动移动
-                {
-
-                    Log.i(TAG, String.format("findSnapView 左滑 %d", positionCurrent));
-                    RecyclerView.SmoothScroller smoothScroller = createScroller(layoutManager);
-
-                    int targetPosition = findTargetSnapPosition(layoutManager, -1, 0);
-
-                    smoothScroller.setTargetPosition(targetPosition);
-                    layoutManager.startSmoothScroll(smoothScroller);
-                    return null;
-                }
-                if(positionCurrent < 0 || !currentIsValid)   // 右滑
-                {
-                    if(nextChild != null) currentPosition += page_limit;
-                    Log.i(TAG, String.format("findSnapView 右滑 %d", positionCurrent));
-                    return nextChild;
-                }
-            Log.i(TAG, String.format("findSnapView"));
-            return null;
+            Log.i(TAG, String.format("findSnapView 现在在 %d", currentPosition));
+            return closestChild;
         }
 
         @NonNull
@@ -213,7 +200,6 @@ public class ButtonPageScroll extends RecyclerView {
 
         @Override
         public int findTargetSnapPosition(LayoutManager layoutManager, int velocityX, int velocityY) {
-
 
             Log.i(TAG, String.format("findTargetSnapPosition: 当前index为%d", currentPosition));
             Log.d(TAG, "findTargetSnapPosition: 速度 " + velocityX);

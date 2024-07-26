@@ -46,7 +46,7 @@ public class MyViewActivity extends AppCompatActivity {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(20, 30);
         lp2.setMargins(5,5,5,5);
-        for(int i = 0;i<40 ;i++)
+        for(int i = 0;i<43 ;i++)
         {
             tv = new TextView(this);
             tv.setText("text");
