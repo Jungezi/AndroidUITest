@@ -1,6 +1,5 @@
 package com.www233.uitest.viewtest;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +15,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.www233.uitest.R;
 import com.www233.uitest.buttonpagescroll.ButtonPageScroll;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +57,7 @@ public class MyViewActivity extends AppCompatActivity {
 
         LinearLayout view = findViewById(R.id.main);
         view.addView(buttonPageScroll);
+
     }
 
     private void initButton() {
