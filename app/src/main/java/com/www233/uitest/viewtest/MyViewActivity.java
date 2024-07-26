@@ -1,7 +1,11 @@
 package com.www233.uitest.viewtest;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -11,6 +15,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.www233.uitest.R;
+import com.www233.uitest.buttonpagescroll.ButtonPageScroll;
+
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyViewActivity extends AppCompatActivity {
 
@@ -26,8 +36,30 @@ public class MyViewActivity extends AppCompatActivity {
         });
 
         initButton();
+        initRecycler();
 
+    }
 
+    private void initRecycler() {
+        List<View> list = new ArrayList<>();
+        TextView tv;
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(20, 30);
+        lp2.setMargins(5,5,5,5);
+        for(int i = 0;i<40 ;i++)
+        {
+            tv = new TextView(this);
+            tv.setText("text");
+            tv.setBackgroundColor(getColor(R.color.blue));
+            tv.setLayoutParams(lp2);
+            list.add(tv);
+        }
+        ButtonPageScroll buttonPageScroll = new ButtonPageScroll(this,list);
+        buttonPageScroll.setLayoutParams(lp);
+        buttonPageScroll.setBackgroundColor(getColor(R.color.green_light));
+
+        LinearLayout view = findViewById(R.id.main);
+        view.addView(buttonPageScroll);
     }
 
     private void initButton() {

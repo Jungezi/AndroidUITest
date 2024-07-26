@@ -51,7 +51,11 @@
 
     </LinearLayout>
 
-
+<!--    <com.www233.uitest.buttonpagescroll.ButtonPageScroll-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@color/grey"-->
+<!--        android:id="@+id/bps"/>-->
 
 
 </LinearLayout>
