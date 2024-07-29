@@ -41,4 +41,16 @@
 
     </declare-styleable>
 
+    <declare-styleable name="EllipsizeTextView">
+        <attr name="state">
+            <enum name="fold" value="0"/>
+            <enum name="expand" value="1"/>
+            <enum name="inhibit" value="2"/>
+        </attr>
+        <attr name="max_lines" format="integer"/>
+        <attr name="hint_text_toFold" format="string"/>
+        <attr name="hint_text_toExpand" format="string"/>
+        <attr name="hint_color" format="reference"/>
+    </declare-styleable>
+    
 </resources>

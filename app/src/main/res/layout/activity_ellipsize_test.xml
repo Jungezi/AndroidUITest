@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ellipsizetest.EllipsizeTestActivity">
+
+    <com.www233.uitest.ellipsizetest.EllipsizeTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:max_lines="10"
+        android:background="@color/green_light"
+        android:text="Here is a solution to the problem. It is a subclass of TextView that actually works for ellipsizing. The android-textview-multiline-ellipse code listed in an earlier answers I have found to be buggy in certain circumstances, as well as being under GPL, which doesn't really work for most of us. Feel free to use this code freely and without attribution, or under the Apache license if you would prefer. Note that there is a listener to notify you when the text becomes ellipsized, which I found quite useful myself."
+        android:textSize="20dp" />
+</LinearLayout>

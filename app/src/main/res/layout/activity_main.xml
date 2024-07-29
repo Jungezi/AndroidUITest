@@ -53,6 +53,12 @@
         android:onClick="toMulti"
         android:text="多线程练习"
         android:textSize="15dp" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="toEllipsizeView"
+        android:text="可折叠文本"
+        android:textSize="15dp" />
 
 
 </LinearLayout>

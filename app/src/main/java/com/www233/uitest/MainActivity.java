@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.www233.uitest.charttest.PracticeChartActivity;
+import com.www233.uitest.ellipsizetest.EllipsizeTestActivity;
 import com.www233.uitest.flowtest.FlowLayoutTestActivity;
 import com.www233.uitest.httptest.PracticeInternetActivity;
 import com.www233.uitest.multithreadtest.MultiThreadTestActivity;
@@ -72,5 +73,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MultiThreadTestActivity.class);
         startActivity(intent);
 
+    }
+
+    public void toEllipsizeView(View view) {
+        Intent intent = new Intent(this, EllipsizeTestActivity.class);
+        startActivity(intent);
     }
 }
