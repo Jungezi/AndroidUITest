@@ -15,8 +15,9 @@ import java.util.Objects;
 
 public class GridPageSnapHelper extends SnapHelper {
     private static final String TAG = "GridPageSnapHelper";
-    private int currentPositionVertical = 0, currentPositionHorizontal = 0;
-    private int ROW, page_limit, all_item = 0;
+    private int currentPositionVertical = 0, currentPositionHorizontal = 0; // 记录当前页的首个index
+    private final int ROW, page_limit;  // ROW限制行数/列数, page_limit每页最大数量
+    private int all_item = 0;   // 控件总数
     private OrientationHelper mHorizontalHelper, mVerticalHelper;
 
     /**
@@ -26,9 +27,6 @@ public class GridPageSnapHelper extends SnapHelper {
      * @param page_limit 每一页最多有多少控件
      */
     public GridPageSnapHelper(int ROW, int page_limit) {
-
-        // TODO: 如果recyclerview的宽高是WRAP_CONTENT的话，自动根据这两个值计算宽高
-        // TODO: 如果recyclerview的宽高是MATCH_PARENT的话，自动根据view的宽高和Row/page_limit计算另一个值
         this.ROW = ROW;
         this.page_limit = page_limit;
     }
@@ -64,29 +62,34 @@ public class GridPageSnapHelper extends SnapHelper {
     }
 
     int distanceToNextPage(@NonNull RecyclerView.LayoutManager layoutManager, OrientationHelper helper, @NonNull View targetView, int direction) {
-        int position = layoutManager.getPosition(targetView);
+        int targetPosition = layoutManager.getPosition(targetView);
         int currentPosition = (direction == Direction.HORIZONTAL ? currentPositionHorizontal : currentPositionVertical);
         int currentPageStart = currentPosition;
-        int ans;
-        if (Math.abs(position - currentPosition) >= page_limit) {   // 目标view已加载出来，不用再计算
-            ans = helper.getDecoratedStart(targetView) - helper.getStartAfterPadding();
-            currentPageStart = position;
-        } else {    // 移动半块及以上时会滑动页面
+        int result;
+        if (Math.abs(targetPosition - currentPosition) >= page_limit) {
+            // 目标view已加载出来，不用再计算移动距离而是可以直接获取: 滑动时会调用findTargetSnapPosition()直接得到targetView
+            result = helper.getDecoratedStart(targetView) - helper.getStartAfterPadding();
+            currentPageStart = targetPosition;
+        } else {    // 移动半块及以上时会滑动页面: 拖动时只会调用findSnapView()从而获取到距离当前页面最左边最近的view
             int dis = Math.abs(helper.getDecoratedStart(targetView) - helper.getStartAfterPadding());
-            if (position < currentPosition - ROW
-                    || dis <= (helper.getDecoratedMeasurement(targetView) / 2) && position < currentPosition) {  // 左移
+            
+            if (targetPosition < currentPosition - ROW
+                    || dis <= (helper.getDecoratedMeasurement(targetView) / 2) && targetPosition < currentPosition) {
+                // 左移且移动半块以上
                 currentPageStart = currentPosition - page_limit;
 
-            } else if (position >= currentPosition + ROW
-                    || dis >= (helper.getDecoratedMeasurement(targetView) / 2) && position >= currentPosition) {    // 右移
+            } 
+            else if (targetPosition >= currentPosition + ROW
+                    || dis >= (helper.getDecoratedMeasurement(targetView) / 2) && targetPosition >= currentPosition) {
+                // 右移且移动半块以上
                 currentPageStart = currentPosition + page_limit;
             }
 
             int columnWidth = helper.getDecoratedMeasurement(targetView);
-            int distance = ((position - currentPageStart) / ROW) * columnWidth;
+            int distance = ((targetPosition - currentPageStart) / ROW) * columnWidth;
             final int childStart = helper.getDecoratedStart(targetView);
 
-            ans = childStart - distance;
+            result = childStart - distance;
         }
 
         if (direction == Direction.HORIZONTAL)
@@ -94,9 +97,17 @@ public class GridPageSnapHelper extends SnapHelper {
         else
             currentPositionVertical = currentPageStart;
 
-        return ans;
+        return result;
     }
 
+    /**
+     * 计算到目标页需要移动的距离
+     * @param layoutManager the {@link RecyclerView.LayoutManager} associated with the attached
+     *                      {@link RecyclerView}
+     * @param targetView the target view that is chosen as the view to snap
+     *
+     * @return x/y上的距离
+     */
     @Nullable
     @Override
     public int[] calculateDistanceToFinalSnap(@NonNull RecyclerView.LayoutManager layoutManager, @NonNull View targetView) {
@@ -138,6 +149,14 @@ public class GridPageSnapHelper extends SnapHelper {
         }
         return closestChild;
     }
+
+    /**
+     * 寻找用于移动的基准view(当前页距离最左边最近的view)
+     * @param layoutManager the {@link RecyclerView.LayoutManager} associated with the attached
+     *                      {@link RecyclerView}
+     *
+     * @return view
+     */
     @Nullable
     @Override
     public View findSnapView(RecyclerView.LayoutManager layoutManager) {
