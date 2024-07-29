@@ -51,7 +51,10 @@ public class MyViewActivity extends AppCompatActivity {
         {
             tv = new TextView(this);
             tv.setText("text");
-            tv.setBackgroundColor(getColor(R.color.blue));
+            if(i % page_limit == 0)
+                tv.setBackgroundColor(getColor(R.color.blue));
+            else
+                tv.setBackgroundColor(getColor(R.color.red));
             tv.setLayoutParams(lp2);
             list.add(tv);
         }
