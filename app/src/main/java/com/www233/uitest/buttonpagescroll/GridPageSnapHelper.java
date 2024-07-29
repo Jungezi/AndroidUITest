@@ -1,11 +1,13 @@
 package com.www233.uitest.buttonpagescroll;
 
 import android.graphics.Rect;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +21,9 @@ public class GridPageSnapHelper extends SnapHelper {
     private final int ROW, page_limit;  // ROW限制行数/列数, page_limit每页最大数量
     private int all_item = 0;   // 控件总数
     private OrientationHelper mHorizontalHelper, mVerticalHelper;
+    RecyclerView mRecyclerView;
+    static final float MILLISECONDS_PER_INCH = 100f;
+    private static final int MAX_SCROLL_ON_FLING_DURATION = 100; // ms
 
     /**
      * 初始化
@@ -36,6 +41,7 @@ public class GridPageSnapHelper extends SnapHelper {
         super.attachToRecyclerView(recyclerView);
         if (recyclerView != null) {
             all_item = Objects.requireNonNull(recyclerView.getAdapter()).getItemCount();
+            mRecyclerView = recyclerView;
             recyclerView.addItemDecoration(new ButtonPageScrollDecoration());
         }
     }
@@ -219,6 +225,39 @@ public class GridPageSnapHelper extends SnapHelper {
 
     }
 
+    @Nullable
+    @Override
+    protected RecyclerView.SmoothScroller createScroller(RecyclerView.LayoutManager layoutManager) {
+
+        if (!(layoutManager instanceof RecyclerView.SmoothScroller.ScrollVectorProvider)) {
+            return null;
+        }
+        return new LinearSmoothScroller(mRecyclerView.getContext() ){
+
+            @Override
+            protected void onTargetFound(View targetView, RecyclerView.State state, Action action) {
+                int[] snapDistances = calculateDistanceToFinalSnap(mRecyclerView.getLayoutManager(),
+                        targetView);
+                final int dx = snapDistances[0];
+                final int dy = snapDistances[1];
+                final int time = calculateTimeForDeceleration(Math.max(Math.abs(dx), Math.abs(dy)));
+                if (time > 0) {
+                    action.update(dx, dy, time, mDecelerateInterpolator);
+                }
+            }
+
+            @Override
+            protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+                return MILLISECONDS_PER_INCH / displayMetrics.densityDpi;
+            }
+
+            @Override
+            protected int calculateTimeForScrolling(int dx) {
+                return Math.min(MAX_SCROLL_ON_FLING_DURATION, super.calculateTimeForScrolling(dx));
+            }
+
+        };
+    }
 
     private class ButtonPageScrollDecoration extends RecyclerView.ItemDecoration {
         int last_line_st = all_item - ((all_item - 1) % ROW) - 1;
