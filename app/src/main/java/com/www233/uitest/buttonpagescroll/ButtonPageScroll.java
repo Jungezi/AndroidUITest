@@ -1,5 +1,4 @@
 package com.www233.uitest.buttonpagescroll;
-
 import static androidx.core.content.res.ResourcesCompat.getColor;
 
 import android.content.Context;
@@ -23,12 +22,12 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import com.www233.gridpagersnaphelper.GridPagerSnapHelper;
 import com.www233.uitest.R;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
 public class ButtonPageScroll extends RecyclerView {
     private static final String TAG = "ButtonPageScroll";
     int type = 0;
@@ -70,8 +69,7 @@ public class ButtonPageScroll extends RecyclerView {
             gridLayoutManager = new GridLayoutManager(getContext(), ROW, VERTICAL, false);
 
         this.setLayoutManager(gridLayoutManager);
-
-        GridPageSnapHelper snapHelper = new GridPageSnapHelper(ROW, page_limit);
+        GridPagerSnapHelper snapHelper = new GridPagerSnapHelper(ROW, page_limit);
         snapHelper.attachToRecyclerView(this);
 
     }

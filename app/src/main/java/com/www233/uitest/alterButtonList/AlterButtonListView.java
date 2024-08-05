@@ -570,6 +570,7 @@ public class AlterButtonListView extends RadioGroup {
             super(itemView);
             tv = itemView;
         }
+
     }
 
     public interface OnSelectedButtonChangedListener {
