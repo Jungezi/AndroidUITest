@@ -17,6 +17,7 @@ import com.www233.uitest.flowtest.FlowLayoutTestActivity;
 import com.www233.uitest.httptest.PracticeInternetActivity;
 import com.www233.uitest.multithreadtest.MultiThreadTestActivity;
 import com.www233.uitest.mvvmtest.MvvmTestActivity;
+import com.www233.uitest.plottest.PlotActivity;
 import com.www233.uitest.viewtest.MyViewActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -77,6 +78,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void toEllipsizeView(View view) {
         Intent intent = new Intent(this, EllipsizeTestActivity.class);
+        startActivity(intent);
+    }
+
+    public void toPlotTest(View view) {
+        Intent intent = new Intent(this, PlotActivity.class);
         startActivity(intent);
     }
 }

@@ -12,9 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        app:max_lines="1"
-        android:background="@color/green_light"
-        android:text="
-Here 空格 is 空格 a 空格 solution 空格 to 空格 the 空格 problem. 空格 It 空格 is 空格 a 空格 subclass 空格 of 空格 TextView 空格 that 空格 actually 空格 works 空格 for 空格 ellipsizing. 空格 The 空格 android-textview-multiline-ellipse 空格 code 空格 listed 空格 in 空格 an 空格 earlier 空格 answers 空格 I 空格 have 空格 found 空格 to 空格 be 空格 buggy 空格 in 空格 certain 空格 circumstances, 空格 as 空格 well 空格 as 空格 being 空格 under 空格 GPL, 空格 which 空格 doesn't 空格 really 空格 work 空格 for 空格 most 空格 of 空格 us. 空格 Feel 空格 free 空格 to 空格 use 空格 this 空格 code 空格 freely 空格 and 空格 without 空格 attribution 空格 ,or 空格 under 空格 the 空格 Apache 空格 license 空格 if 空格 you 空格 would 空格 prefer. 空格 Note 空格 that 空格 there 空格 is 空格 a 空格 listener 空格 to 空格 notify 空格 you 空格 when 空格 the 空格 text 空格 becomes 空格 ellipsized, 空格 which 空格 I 空格 found 空格 quite useful myself."
+        app:max_lines="5"
+        app:text_tag=" 简介 "
+        app:hint_text_toExpand="更多"
+        android:text=" Here 空格 is 空格 a 空格 solution 空格 to 空格 the 空格 problem. 空格 It 空格 is 空格 a 空格 subclass 空格 of 空格 TextView 空格 that 空格 actually 空格 works 空格 for 空格 ellipsizing. 空格 The 空格 android-textview-multiline-ellipse 空格 code 空格 listed 空格 in 空格 an 空格 earlier 空格 answers 空格 I 空格 have 空格 found 空格 to 空格 be 空格 buggy 空格 in 空格 certain 空格 circumstances, 空格 as 空格 well 空格 as 空格 being 空格 under 空格 GPL, 空格 which 空格 doesn't 空格 really 空格 work 空格 for 空格 most 空格 of 空格 us. 空格 Feel 空格 free 空格 to 空格 use 空格 this 空格 code 空格 freely 空格 and 空格 without 空格 attribution 空格 ,or 空格 under 空格 the 空格 Apache 空格 license 空格 if 空格 you 空格 would 空格 prefer. 空格 Note 空格 that 空格 there 空格 is 空格 a 空格 listener 空格 to 空格 notify 空格 you 空格 when 空格 the 空格 text 空格 becomes 空格 ellipsized, 空格 which 空格 I 空格 found 空格 quite useful myself."
         android:textSize="20dp" />
 </LinearLayout>

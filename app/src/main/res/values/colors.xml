@@ -12,4 +12,7 @@
     <color name="trans">#00000000</color>
     <color name="red_light">#1AFB2F3B</color>
     <color name="green_light">#1A1BC07D</color>
+
+    <color name="blue_light100">#8DB3FF</color>
+    <color name="blue_light40">#66C3D7FF</color>
 </resources>

@@ -51,6 +51,7 @@
         <attr name="hint_text_toFold" format="string"/>
         <attr name="hint_text_toExpand" format="string"/>
         <attr name="hint_color" format="reference"/>
+        <attr name="text_tag" format="string"/>
     </declare-styleable>
     
 </resources>
