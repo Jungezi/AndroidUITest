@@ -4,17 +4,11 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
-import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
-import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
-import android.text.style.SuggestionSpan;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -22,25 +16,19 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.room.util.StringUtil;
 
 import com.www233.uitest.R;
-
-import okhttp3.internal.Util;
 
 public class EllipsizeTextView extends androidx.appcompat.widget.AppCompatTextView {
     private static final String TAG = "EllipsizeTextView";
     private final String ellipsisHintSign = "\u2026";   // "…"
     private String ellipsisHintToExpand;
     private String ellipsisHintToFold;
-    private String ellipsisTextTag;
     private int initState, maxLine, ellipsisHintColor;
     private static final int FOLD = 0, EXPAND = 1, INHIBIT = 2;
     CharSequence originText;
     SpannableStringBuilder foldString = null;
     SpannableStringBuilder expandString = null;
-    private int originLine;
 
     public EllipsizeTextView(@NonNull Context context) {
         this(context, null);
@@ -70,13 +58,11 @@ public class EllipsizeTextView extends androidx.appcompat.widget.AppCompatTextVi
         if (ellipsisHintToFold == null) ellipsisHintToFold = "收起";
         else ellipsisHintToFold = hintToFold;
 
-        ellipsisTextTag = a.getString(R.styleable.EllipsizeTextView_text_tag);
-
         ellipsisHintColor = a.getColor(R.styleable.EllipsizeTextView_hint_color, getResources().getColor(R.color.blue, theme));
         a.recycle();
 
         setMaxLines(maxLine);    // 初始化时测量准确
-        setHighlightColor(0);
+//        setHighlightColor(getResources().getColor(R.color.blue_bg, theme));
 
 
     }
@@ -102,14 +88,18 @@ public class EllipsizeTextView extends androidx.appcompat.widget.AppCompatTextVi
             Log.i(TAG, String.format("findMaxEllipsize: all:%s max:%s", width_elli, maxWidth));
             len -= 1;
         }
+        while (str.charAt(len - 1) == '\n') len--;
         return len;
     }
 
     private SpannableStringBuilder getFoldSpan() {
         if (foldString != null) return foldString;
         // 展开文字
-        CharSequence foldText_last_line = originText.subSequence(getLayout().getLineStart(maxLine - 1), getLayout().getLineEnd(maxLine - 1));
-        CharSequence foldText = originText.subSequence(0, getLayout().getLineStart(maxLine - 1) + findMaxEllipsize(foldText_last_line.toString(), getWidth() - getPaint().measureText(ellipsisHintSign + ellipsisHintToExpand)));
+        CharSequence foldText_last_line = originText.subSequence(getLayout().getLineStart(maxLine - 1),
+                getLayout().getLineEnd(maxLine - 1));
+        CharSequence foldText = originText.subSequence(0, getLayout().getLineStart(maxLine - 1)
+                + findMaxEllipsize(foldText_last_line.toString(),
+                getWidth() - getPaint().measureText(ellipsisHintSign + ellipsisHintToExpand + ellipsisHintSign)));
         foldString = new SpannableStringBuilder();
         foldString.append(foldText);
         foldString.append(ellipsisHintSign);
@@ -124,7 +114,7 @@ public class EllipsizeTextView extends androidx.appcompat.widget.AppCompatTextVi
 
                                @Override
                                public void onClick(@NonNull View widget) {
-                                   setTextWrapTag(getExpandSpan());
+                                   setText(getExpandSpan());
                                    setMovementMethod(LinkMovementMethod.getInstance());
                                }
                            }, foldString.length() - ellipsisHintToExpand.length(),
@@ -132,32 +122,12 @@ public class EllipsizeTextView extends androidx.appcompat.widget.AppCompatTextVi
         return foldString;
     }
 
-    CharSequence getSpace(float nowWidth, float addWidth) {
-        int width = getWidth();
-        float spaceWidth = getPaint().measureText("\u0020", 0, 1);
-        int spaceNum;
-        CharSequence result = "";
-        if (width - nowWidth < addWidth) {  // 换行
-            spaceNum = (int) ((width - addWidth) / spaceWidth);
-            result += "\r\n";
-        } else {
-            spaceNum = (int) ((width - nowWidth - addWidth) / spaceWidth);
-        }
-        Log.i(TAG, String.format("getSpace: allwidth %d nowWidth %s space %s*%d add %s", width, nowWidth, spaceWidth, spaceNum, addWidth));
-        for (; spaceNum > 0; spaceNum--) {
-            result += "\u0020";
-        }
-        return result;
-    }
-
     private SpannableStringBuilder getExpandSpan() {
         if (expandString != null) return expandString;
         // 收起文字
         expandString = new SpannableStringBuilder();
         expandString.append(originText);
-
-        float last_line_width = getPaint().measureText(originText, getLayout().getLineStart(originLine - 1), getLayout().getLineEnd(originLine - 1));
-        expandString.append(getSpace(last_line_width, getPaint().measureText(ellipsisHintSign + ellipsisHintToExpand)));
+//        expandString.append("\n");
         expandString.append(ellipsisHintToFold);
         expandString.setSpan(new ClickableSpan() {
                                  @Override
@@ -169,12 +139,30 @@ public class EllipsizeTextView extends androidx.appcompat.widget.AppCompatTextVi
 
                                  @Override
                                  public void onClick(@NonNull View widget) {
-                                     setTextWrapTag(getFoldSpan());
+                                     setText(getFoldSpan());
                                      setMovementMethod(LinkMovementMethod.getInstance());
                                  }
                              }, expandString.length() - ellipsisHintToFold.length(),
                 expandString.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
         return expandString;
+    }
+
+    private void refreash() {
+        foldString = null;
+        expandString = null;
+        initState = FOLD;
+        setMaxLines(maxLine);    // 初始化时测量准确
+        setText(originText);
+    }
+
+    public void setMaxLine(int maxLines) {
+        this.maxLine = maxLines;
+        refreash();
+    }
+
+    public void setProfile(CharSequence text) {
+        originText = text;
+        refreash();
     }
 
     @Override
@@ -187,45 +175,20 @@ public class EllipsizeTextView extends androidx.appcompat.widget.AppCompatTextVi
             initState = INHIBIT;
         } else {
             setMaxLines(Integer.MAX_VALUE);    // 无需再用到自带方法
-            originLine = getLineCount();
             getExpandSpan();
             if (initState == FOLD)    // 初始化为收起状态
             {
                 initState = -1;  // 已初始化完毕
-                setTextWrapTag(getFoldSpan());
+                setText(getFoldSpan());
                 setMovementMethod(LinkMovementMethod.getInstance());
                 requestLayout();
             } else if (initState == EXPAND) {
                 initState = -1;  // 已初始化完毕
-                setTextWrapTag(getExpandSpan());
+                setText(getExpandSpan());
                 setMovementMethod(LinkMovementMethod.getInstance());
                 requestLayout();
             }
         }
         Log.d(TAG, "onLayout: done");
     }
-    
-    void setTextWrapTag(SpannableStringBuilder spannableStringBuilder)
-    {
-        if(ellipsisTextTag == null)
-        {
-            setText(spannableStringBuilder);
-        }
-        else
-        {
-            SpannableStringBuilder tagString = new SpannableStringBuilder();
-            tagString.append(ellipsisTextTag);
-            tagString.append(spannableStringBuilder);
-
-            tagString.setSpan(new BackgroundColorSpan(ResourcesCompat.getColor(getResources(),R.color.grey, getContext().getTheme())),
-                    0, ellipsisTextTag.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-            tagString.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(getResources(),R.color.blue, getContext().getTheme())),
-                    0, ellipsisTextTag.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-            tagString.setSpan(new RelativeSizeSpan(0.8f),0, ellipsisTextTag.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-
-
-            setText(tagString);
-        }
-    }
-    
 }
