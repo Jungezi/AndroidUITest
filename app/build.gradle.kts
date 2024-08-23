@@ -50,4 +50,5 @@ dependencies {
     implementation("androidx.room:room-runtime:2.2.5")
     annotationProcessor(libs.room.compiler)
     implementation("io.github.wuww233:GridPagerSnapHelper:1.0.1")
+    implementation ("com.github.eekidu:devlayout:1.2.0")
 }

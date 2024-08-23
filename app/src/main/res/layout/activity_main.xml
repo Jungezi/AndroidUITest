@@ -65,6 +65,12 @@
         android:onClick="toPlotTest"
         android:text="自定义图标"
         android:textSize="15dp" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="toProcessViewTest"
+        android:text="不同颜色拼接的条儿"
+        android:textSize="15dp" />
 
 
 </LinearLayout>

@@ -54,4 +54,12 @@
         <attr name="text_tag" format="string"/>
     </declare-styleable>
     
+    <declare-styleable name="ProcessView">
+        <attr name="barHeight" format="dimension"/>
+        <attr name="numTextSize" format="dimension"/>
+        <attr name="indicatorSize" format="dimension"/>
+        <attr name="textMargin" format="dimension"/>
+        
+    </declare-styleable>
+    
 </resources>

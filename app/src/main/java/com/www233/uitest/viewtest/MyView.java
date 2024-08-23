@@ -46,6 +46,7 @@ public class MyView extends View {
             }
         });
 
+
         final Resources.Theme theme = context.getTheme();
         TypedArray a = theme.obtainStyledAttributes(attrs,
                 R.styleable.MyView, defStyleAttr, defStyleRes);

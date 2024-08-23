@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".processviewtest.ProcessViewActivity">
+
+    <com.www233.uitest.processviewtest.ProcessView
+        android:id="@+id/processView"
+        android:layout_width="match_parent"
+        android:paddingHorizontal="10dp"
+        android:layout_marginTop="30dp"
+        app:numTextSize="15sp"
+        android:paddingVertical="10dp"
+        android:background="@color/green_light"
+        android:layout_height="wrap_content"/>
+
+    <com.github.eekidu.dev.devlayout.DevLayout
+        android:id="@+id/devLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
