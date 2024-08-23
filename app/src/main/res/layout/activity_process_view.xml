@@ -17,9 +17,14 @@
         android:paddingVertical="10dp"
         android:background="@color/green_light"
         android:layout_height="wrap_content"/>
-
     <com.github.eekidu.dev.devlayout.DevLayout
         android:id="@+id/devLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tv_touch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
 </LinearLayout>

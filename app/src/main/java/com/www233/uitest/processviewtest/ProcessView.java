@@ -11,6 +11,7 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -35,11 +36,21 @@ public class ProcessView extends View {
         }
     }
 
+    interface OnBarTouchListener {
+        /**
+         * @param position       当前点击处的百分占比
+         * @param index          当前点击处位于第几个部分 (start from 0)
+         * @param partProportion 当前点击处位于该部分的占比 in [0,1]
+         */
+        void onBarTouch(float position, int index, float partProportion);
+    }
+
     final static int DEFAULT_TEXT_SIZE = 14, DEFAULT_BAR_HEIGHT = 10, DEFAULT_BAR_WIDTH = 100,
             DEFAULT_INDICATOR_SIZE = 10, DEFAULT_TEXT_MARGIN = 5;
     List<Part> processList = new ArrayList<>();
     float currentProcess;
     Paint paint;
+    OnBarTouchListener onBarTouchListener;
 
     int barHeight;
     int textSize;
@@ -50,6 +61,8 @@ public class ProcessView extends View {
     int default_textSize;
     int default_indicatorSize;
     int default_textMargin;
+
+    float barYStart = 0;
 
     public ProcessView(Context context) {
         this(context, null);
@@ -75,6 +88,44 @@ public class ProcessView extends View {
         a.recycle();
 
         initPaint();
+
+        setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (onBarTouchListener != null) {
+                    Log.d(TAG, String.format("onTouchEvent: %s %s", event.getX(), event.getY()));
+                    if (event.getX() >= 0 && event.getX() <= getMeasuredWidth()
+                            && event.getY() >= 0 && event.getY() <= getMeasuredHeight())
+                        switch (event.getAction()) {
+                            case MotionEvent.ACTION_MOVE:
+                            case MotionEvent.ACTION_DOWN:
+                            case MotionEvent.ACTION_UP:
+                                float x = event.getX();
+                                if (x < getPaddingStart()) x = getPaddingStart();
+                                if (event.getX() > getMeasuredWidth() - getPaddingEnd())
+                                    x = getMeasuredWidth() - getPaddingEnd();
+
+                                List<Part> normList = normalize(processList);
+                                float current_length = 0, index_position = 0;
+                                float x_ori = projectInverse(x);
+                                int index = 0;
+                                for (Part part : normList) {
+                                    // (start,end] 时绘制三角形和字体
+                                    if (x_ori <= current_length + part.length) {
+                                        index_position = (x_ori - current_length) / part.length;
+                                        break;
+                                    }
+                                    current_length += part.length;
+                                    index++;
+                                }
+                                onBarTouchListener.onBarTouch(x_ori, index, index_position);
+                                return true;
+                        }
+                }
+
+                return false;
+            }
+        });
     }
 
     private void initPaint() {
@@ -90,9 +141,10 @@ public class ProcessView extends View {
     }
 
     public void setProcessList(List<Part> processList) {
-        this.processList =processList;
+        this.processList = processList;
         invalidate();
     }
+
     public void addProcessList(List<Part> processList) {
         this.processList.addAll(processList);
         invalidate();
@@ -102,9 +154,15 @@ public class ProcessView extends View {
         this.processList.add(process);
         invalidate();
     }
+
     public void removeProcess(int index) {
         this.processList.remove(index);
         invalidate();
+    }
+
+
+    public void setOnBarTouchListener(OnBarTouchListener onBarTouchListener) {
+        this.onBarTouchListener = onBarTouchListener;
     }
 
     /**
@@ -218,6 +276,10 @@ public class ProcessView extends View {
         return x / 100 * (getMeasuredWidth() - getPaddingLeft() - getPaddingRight()) + getPaddingStart();
     }
 
+    float projectInverse(float x) {
+        return (x - getPaddingStart()) * 100 / (getMeasuredWidth() - getPaddingLeft() - getPaddingRight());
+    }
+
 
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
@@ -248,6 +310,9 @@ public class ProcessView extends View {
         // 颜色条和三角形
         float current_length = 0;
         float current_x = start;
+
+        barYStart = triangle_bottom_y;
+
 //        Log.i(TAG, String.format("onDraw: %s<>%s", triangle_height , barHeight));
         List<Part> normList = normalize(processList);
 
@@ -292,4 +357,5 @@ public class ProcessView extends View {
         if (sp == -1) return -1;
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, Resources.getSystem().getDisplayMetrics());
     }
+
 }
