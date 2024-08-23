@@ -73,7 +73,7 @@ public class ProcessViewActivity extends AppCompatActivity {
             public void onProgressChanged(int i) {
                 processView.setTextSize(i);
             }
-        }).setMin(5).setMax(30);
+        }).setMin(0).setMax(30);
         devLayout.addSeekBar("字体下方间距", new SeekBarLayout.OnProgressChangeListener() {
             @Override
             public void onProgressChanged(int i) {
