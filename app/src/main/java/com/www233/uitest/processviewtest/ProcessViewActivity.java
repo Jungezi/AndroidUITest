@@ -5,6 +5,7 @@ import android.text.Editable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,9 +37,23 @@ public class ProcessViewActivity extends AppCompatActivity {
 
         initProcessView();
         initDevLayout();
+        initTextView();
+    }
+
+    private void initTextView() {
+        TextView tv_touch = findViewById(R.id.tv_touch);
+        processView.setOnBarTouchListener(new ProcessView.OnBarTouchListener() {
+            @Override
+            public void onBarTouch(float position, int index, float partProportion) {
+
+                tv_touch.setText(String.format("当前比例：%.2f%%(第%d个的%.2f%%)", position, index, partProportion * 100));
+                processView.setCurrentProcess(position);
+            }
+        });
     }
 
     ProcessView processView;
+
     private void initDevLayout() {
         DevLayout devLayout = findViewById(R.id.devLayout);
         devLayout.addSeekBar("条儿高度", new SeekBarLayout.OnProgressChangeListener() {
@@ -68,7 +83,7 @@ public class ProcessViewActivity extends AppCompatActivity {
         devLayout.addSeekBar("当前进度", new SeekBarLayout.OnProgressChangeListener() {
             @Override
             public void onProgressChanged(int i) {
-                processView.setCurrentProcess(i/100f);
+                processView.setCurrentProcess(i / 100f);
             }
         }).setMin(0).setMax(10000);
         devLayout.addSeekBar("设置高度", new SeekBarLayout.OnProgressChangeListener() {
@@ -136,30 +151,30 @@ public class ProcessViewActivity extends AppCompatActivity {
             }
         }).setMin(10).setMax(100);
         devLayout.addRadioGroup("新增的颜色")
-                        .addItem("红色", new RadioGroupLayout.OnItemCheckListener() {
-                            @Override
-                            public void onSelect() {
-                                colorRes = getColor(R.color.red);
-                            }
-                        })
-                        .addItem("蓝色", new RadioGroupLayout.OnItemCheckListener() {
-                            @Override
-                            public void onSelect() {
-                                colorRes = getColor(R.color.blue);
-                            }
-                        })
-                        .addItem("橘色", new RadioGroupLayout.OnItemCheckListener() {
-                            @Override
-                            public void onSelect() {
-                                colorRes = getColor(R.color.orange);
-                            }
-                        })
-                        .addItem("灰色", new RadioGroupLayout.OnItemCheckListener() {
-                            @Override
-                            public void onSelect() {
-                                colorRes = getColor(R.color.grey_heavy);
-                            }
-                        }).setChecked(0);
+                .addItem("红色", new RadioGroupLayout.OnItemCheckListener() {
+                    @Override
+                    public void onSelect() {
+                        colorRes = getColor(R.color.red);
+                    }
+                })
+                .addItem("蓝色", new RadioGroupLayout.OnItemCheckListener() {
+                    @Override
+                    public void onSelect() {
+                        colorRes = getColor(R.color.blue);
+                    }
+                })
+                .addItem("橘色", new RadioGroupLayout.OnItemCheckListener() {
+                    @Override
+                    public void onSelect() {
+                        colorRes = getColor(R.color.orange);
+                    }
+                })
+                .addItem("灰色", new RadioGroupLayout.OnItemCheckListener() {
+                    @Override
+                    public void onSelect() {
+                        colorRes = getColor(R.color.grey_heavy);
+                    }
+                }).setChecked(0);
         devLayout.addButton("添加", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,16 +192,16 @@ public class ProcessViewActivity extends AppCompatActivity {
 
     int length = 0;
     int colorRes = 0;
+
     private void initProcessView() {
         processView = findViewById(R.id.processView);
         List<ProcessView.Part> process = new ArrayList<>();
-        process.add(new ProcessView.Part(30,getColor(R.color.red)));
-        process.add(new ProcessView.Part(40,getColor(R.color.blue)));
-        process.add(new ProcessView.Part(30,getColor(R.color.orange)));
+        process.add(new ProcessView.Part(30, getColor(R.color.red)));
+        process.add(new ProcessView.Part(40, getColor(R.color.blue)));
+        process.add(new ProcessView.Part(30, getColor(R.color.orange)));
         processView.setProcessList(process);
         processView.setCurrentProcess(20);
     }
-
 
 
 }
