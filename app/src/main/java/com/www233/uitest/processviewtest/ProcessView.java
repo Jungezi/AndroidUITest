@@ -45,6 +45,7 @@ public class ProcessView extends View {
         void onBarTouch(float position, int index, float partProportion);
     }
 
+    final static int DEFAULT = -1;
     final static int DEFAULT_TEXT_SIZE = 14, DEFAULT_BAR_HEIGHT = 10, DEFAULT_BAR_WIDTH = 100,
             DEFAULT_INDICATOR_SIZE = 10, DEFAULT_TEXT_MARGIN = 5;
     List<Part> processList = new ArrayList<>();
@@ -81,10 +82,10 @@ public class ProcessView extends View {
 
         final Resources.Theme theme = context.getTheme();
         TypedArray a = theme.obtainStyledAttributes(attrs, R.styleable.ProcessView, 0, 0);
-        default_barHeight = (int) a.getDimension(R.styleable.ProcessView_barHeight, -1);
-        default_textSize = (int) a.getDimension(R.styleable.ProcessView_numTextSize, -1);
-        default_indicatorSize = (int) a.getDimension(R.styleable.ProcessView_barHeight, -1);
-        default_textMargin = (int) a.getDimension(R.styleable.ProcessView_barHeight, -1);
+        default_barHeight = (int) a.getDimension(R.styleable.ProcessView_barHeight, DEFAULT);
+        default_textSize = (int) a.getDimension(R.styleable.ProcessView_numTextSize, DEFAULT);
+        default_indicatorSize = (int) a.getDimension(R.styleable.ProcessView_barHeight, DEFAULT);
+        default_textMargin = (int) a.getDimension(R.styleable.ProcessView_barHeight, DEFAULT);
         a.recycle();
 
         initPaint();
@@ -195,22 +196,22 @@ public class ProcessView extends View {
     }
 
     public void setBarHeight(int barHeight) {
-        this.default_barHeight = dp2px(barHeight);
+        this.default_barHeight = barHeight == DEFAULT ? DEFAULT : dp2px(barHeight);
         requestLayout();
     }
 
     public void setTextSize(int textSize) {
-        this.default_textSize = sp2px(textSize);
+        this.default_textSize = textSize == DEFAULT ? DEFAULT : sp2px(textSize);
         requestLayout();
     }
 
     public void setIndicatorSize(int indicatorSize) {
-        this.default_indicatorSize = dp2px(indicatorSize);
+        this.default_indicatorSize = indicatorSize == DEFAULT ? DEFAULT : dp2px(indicatorSize);
         requestLayout();
     }
 
     public void setTextMargin(int textMargin) {
-        this.default_textMargin = dp2px(textMargin);
+        this.default_textMargin = textMargin == DEFAULT ? DEFAULT : dp2px(textMargin);
         requestLayout();
     }
 
@@ -230,17 +231,17 @@ public class ProcessView extends View {
 
         if (heightMode == MeasureSpec.EXACTLY)   // size: 未指定具体大小的部分平分(除了margin)
         {
-            textMargin = default_textMargin == -1 ? dp2px(DEFAULT_TEXT_MARGIN) : default_textMargin;
+            textMargin = default_textMargin == DEFAULT ? dp2px(DEFAULT_TEXT_MARGIN) : default_textMargin;
 
             int remainHeight = heightsize - textMargin - getPaddingTop() - getPaddingBottom();
             int notSet = 0;
-            if (default_barHeight == -1)
+            if (default_barHeight == DEFAULT)
                 notSet += 1;
             else remainHeight -= default_barHeight;
-            if (default_textSize == -1)
+            if (default_textSize == DEFAULT)
                 notSet += 1;
             else remainHeight -= default_textSize;
-            if (default_indicatorSize == -1)
+            if (default_indicatorSize == DEFAULT)
                 notSet += 1;
             else remainHeight -= default_indicatorSize;
 
@@ -248,16 +249,16 @@ public class ProcessView extends View {
             if (notSet != 0)
                 height_even = remainHeight / notSet;
 
-            barHeight = default_barHeight == -1 ? height_even : default_barHeight;
-            textSize = default_textSize == -1 ? height_even : default_textSize;
-            indicatorSize = default_indicatorSize == -1 ? height_even : default_indicatorSize;
+            barHeight = default_barHeight == DEFAULT ? height_even : default_barHeight;
+            textSize = default_textSize == DEFAULT ? height_even : default_textSize;
+            indicatorSize = default_indicatorSize == DEFAULT ? height_even : default_indicatorSize;
 
             height = heightsize;
         } else {
-            barHeight = default_barHeight == -1 ? dp2px(DEFAULT_BAR_HEIGHT) : default_barHeight;
-            textSize = default_textSize == -1 ? sp2px(DEFAULT_TEXT_SIZE) : default_textSize;
-            indicatorSize = default_indicatorSize == -1 ? dp2px(DEFAULT_INDICATOR_SIZE) : default_indicatorSize;
-            textMargin = default_textMargin == -1 ? dp2px(DEFAULT_TEXT_MARGIN) : default_textMargin;
+            barHeight = default_barHeight == DEFAULT ? dp2px(DEFAULT_BAR_HEIGHT) : default_barHeight;
+            textSize = default_textSize == DEFAULT ? sp2px(DEFAULT_TEXT_SIZE) : default_textSize;
+            indicatorSize = default_indicatorSize == DEFAULT ? dp2px(DEFAULT_INDICATOR_SIZE) : default_indicatorSize;
+            textMargin = default_textMargin == DEFAULT ? dp2px(DEFAULT_TEXT_MARGIN) : default_textMargin;
 
             height = getTextRect().height() + textMargin + indicatorSize + barHeight + getPaddingTop() + getPaddingBottom();
         }
@@ -349,12 +350,10 @@ public class ProcessView extends View {
     }
 
     public static int dp2px(int dp) {
-        if (dp == -1) return -1;
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, Resources.getSystem().getDisplayMetrics());
     }
 
     public static int sp2px(int sp) {
-        if (sp == -1) return -1;
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, Resources.getSystem().getDisplayMetrics());
     }
 
