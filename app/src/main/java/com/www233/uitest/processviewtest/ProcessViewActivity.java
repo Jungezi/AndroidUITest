@@ -105,25 +105,25 @@ public class ProcessViewActivity extends AppCompatActivity {
         devLayout.addButton("条儿高度自动", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                processView.setBarHeight(-1);
+                processView.setBarHeight(ProcessView.DEFAULT);
             }
         });
         devLayout.addButton("三角形高度自动", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                processView.setIndicatorSize(-1);
+                processView.setIndicatorSize(ProcessView.DEFAULT);
             }
         });
         devLayout.addButton("字体大小自动", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                processView.setTextSize(-1);
+                processView.setTextSize(ProcessView.DEFAULT);
             }
         });
         devLayout.addButton("字体间距默认", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                processView.setTextMargin(-1);
+                processView.setTextMargin(ProcessView.DEFAULT);
             }
         });
         devLayout.addButton("适应高度", new View.OnClickListener() {
