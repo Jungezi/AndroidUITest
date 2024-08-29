@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             app:myBackground="@color/blue"
-            app:myContent="计数器和按钮列表测试"
+            app:myContent="按钮列表测试"
             app:myTitle="MVVM and Button" />
 
         <LinearLayout

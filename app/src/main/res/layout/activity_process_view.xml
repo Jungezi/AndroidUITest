@@ -8,6 +8,12 @@
     android:orientation="vertical"
     tools:context=".processviewtest.ProcessViewActivity">
 
+    <com.www233.uitest.viewtest.MyView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:myBackground="@color/black_use"
+        app:myContent="多种色儿"
+        app:myTitle="颜色拖动条" />
     <com.www233.uitest.processviewtest.ProcessView
         android:id="@+id/processView"
         android:layout_width="match_parent"

@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="toMvvm"
-        android:text="MVVM测试和按钮列表"
+        android:text="MVVM测试和按钮列表类"
         android:textSize="15dp" />
     <Button
         android:layout_width="match_parent"
@@ -63,13 +63,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="toPlotTest"
-        android:text="自定义图标"
+        android:text="自定义折线图"
         android:textSize="15dp" />
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="toProcessViewTest"
-        android:text="不同颜色拼接的条儿"
+        android:text="不同颜色拼接的拖动条"
         android:textSize="15dp" />
 
 
